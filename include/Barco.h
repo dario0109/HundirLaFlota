@@ -11,7 +11,7 @@ class Barco{
 		Barco(std::string nombre, int vida, vector<int> posiciones);
 		void setNombre(std::string nombre);
 		void setVida(int vida);
-		void setPosiciones(vector<int> posciones);
+		void setPosiciones(vector<int> posiciones);
 
 		std::string getNombre();
 		int getVida();
@@ -22,7 +22,7 @@ class Barco{
 	private:
 		std::string _nombre;
 		int _vida;
-		vector<int> posiciones;
+		vector<int> _posiciones;
 };//Fin Barco
 
 #endif

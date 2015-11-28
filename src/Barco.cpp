@@ -16,7 +16,7 @@ void Barco::setVida (int vida){
 	_vida = vida;
 }//Fin setVida
 
-void Barco::setPosicion(vector<int> posiciones){
+void Barco::setPosiciones(vector<int> posiciones){
 	_posiciones = posiciones;
 }//Fin setPosicion
 
