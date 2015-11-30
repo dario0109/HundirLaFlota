@@ -1,7 +1,7 @@
 #include <Ogre.h>
 #include "MyFrameListener.h"
 
-class MyApp {
+class Hundir{
   
 private:
   Ogre::SceneManager* _sceneManager;
@@ -9,8 +9,8 @@ private:
   MyFrameListener* _framelistener;
   
 public:
-  MyApp();
-  ~MyApp();  
+  Hundir();
+  ~Hundir();  
   int start();
   void loadResources();
   void createScene();

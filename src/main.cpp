@@ -12,10 +12,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.  
  *********************************************************************/
-#include "MyApp.h"
+#include "Hundir.h"
 
 int main() {
-  MyApp app;
+  Hundir app;
   app.start();
 
   return 0;

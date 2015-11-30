@@ -13,19 +13,19 @@
  * General Public License for more details.  
  *********************************************************************/
 
-#include "MyApp.h" 
+#include "Hundir.h" 
 
-MyApp::MyApp() {
+Hundir::Hundir() {
   _sceneManager = NULL;
   _framelistener = NULL;
 }
 
-MyApp::~MyApp() {
+Hundir::~Hundir() {
   delete _root;
   delete _framelistener;
 }
 
-int MyApp::start() {
+int Hundir::start() {
   _root = new Ogre::Root();
   
   if(!_root->restoreConfig()) {
@@ -33,11 +33,11 @@ int MyApp::start() {
     _root->saveConfig();
   }
   
-  Ogre::RenderWindow* window = _root->initialise(true,"MyApp Example");
+  Ogre::RenderWindow* window = _root->initialise(true,"Hundir Example");
   _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC);
   
   Ogre::Camera* cam = _sceneManager->createCamera("MainCamera");
-  cam->setPosition(Ogre::Vector3(5,20,20));
+  cam->setPosition(Ogre::Vector3(-10,30,35));
   cam->lookAt(Ogre::Vector3(0,0,0));
   cam->setNearClipDistance(5);
   cam->setFarClipDistance(10000);
@@ -58,7 +58,7 @@ int MyApp::start() {
   return 0;
 }
 
-void MyApp::loadResources() {
+void Hundir::loadResources() {
   Ogre::ConfigFile cf;
   cf.load("resources.cfg");
   
@@ -78,7 +78,22 @@ void MyApp::loadResources() {
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
-void MyApp::createScene() {
-  Ogre::Entity* ent = _sceneManager->createEntity("Sinbad.mesh");
-  _sceneManager->getRootSceneNode()->attachObject(ent);  
+void Hundir::createScene() {
+  Ogre::Entity* plano1 = _sceneManager->createEntity("Cube.mesh");
+  Ogre::SceneNode* nplano1 = _sceneManager->createSceneNode("nplano1");
+  _sceneManager->getRootSceneNode()->addChild(nplano1);
+  nplano1->attachObject(plano1);
+  nplano1->setPosition(0,0,8.5);
+  plano1 = _sceneManager->createEntity("Cube.mesh");
+  Ogre::SceneNode* nplano2 = _sceneManager->createSceneNode("nplano2");
+  _sceneManager->getRootSceneNode()->addChild(nplano2);
+  nplano2->attachObject(plano1);
+  nplano2->setPosition(0,0,-8.5);
+  Ogre::Entity* barrera = _sceneManager->createEntity("Barrera.mesh");
+  Ogre::SceneNode* nbarrera = _sceneManager->createSceneNode("nbarrera");
+  _sceneManager->getRootSceneNode()->addChild(nbarrera);
+  nbarrera->attachObject(barrera);
+  nbarrera->setPosition(0,0,0);
+  nbarrera->yaw(Ogre::Degree(90));
+  _sceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 }
