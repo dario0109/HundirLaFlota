@@ -18,9 +18,9 @@
 #include <vector>
 
 int main() {
-  //Hundir app;
-  //app.start();
-  std::vector <Barco*> barcos;
+  Hundir app;
+  app.start();
+  /*std::vector <Barco*> barcos;
   Barco* b1 = new Barco("Portaviones", 5);
   barcos.push_back(b1);
   Barco* b5 = new Barco("Portaviones2", 5);
@@ -34,7 +34,7 @@ int main() {
   Barco* b6 = new Barco("Lancha2", 1);
   barcos.push_back(b6);
   Tablero tab;
-  tab.crearTablero(barcos);
+  tab.crearTablero(barcos);*/
 
   return 0;
 }

@@ -11,7 +11,7 @@ material Mar
             ambient 0.020902417600154877 0.03166322410106659 0.8000000715255737 1.0
             diffuse 0.016721934329300137 0.025330579658308316 0.640000066757203 1.0
             specular 0.5 0.5 0.5 1.0 12.5
-            emissive 0.0 0.0 0.0 1.0
+            emissive 0.020902417600154877 0.03166322410106659 0.8000000715255737 1.0
 
             alpha_to_coverage off
             colour_write on
@@ -30,6 +30,13 @@ material Mar
             shading gouraud
             transparent_sorting on
 
+            texture_unit 
+            {
+                texture agua_oscura.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
         }
     }
 }

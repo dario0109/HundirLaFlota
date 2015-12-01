@@ -79,21 +79,28 @@ void Hundir::loadResources() {
 }
 
 void Hundir::createScene() {
-  Ogre::Entity* plano1 = _sceneManager->createEntity("Cube.mesh");
-  Ogre::SceneNode* nplano1 = _sceneManager->createSceneNode("nplano1");
-  _sceneManager->getRootSceneNode()->addChild(nplano1);
-  nplano1->attachObject(plano1);
-  nplano1->setPosition(0,0,8.5);
-  plano1 = _sceneManager->createEntity("Cube.mesh");
-  Ogre::SceneNode* nplano2 = _sceneManager->createSceneNode("nplano2");
-  _sceneManager->getRootSceneNode()->addChild(nplano2);
-  nplano2->attachObject(plano1);
-  nplano2->setPosition(0,0,-8.5);
-  Ogre::Entity* barrera = _sceneManager->createEntity("Barrera.mesh");
-  Ogre::SceneNode* nbarrera = _sceneManager->createSceneNode("nbarrera");
-  _sceneManager->getRootSceneNode()->addChild(nbarrera);
-  nbarrera->attachObject(barrera);
-  nbarrera->setPosition(0,0,0);
-  nbarrera->yaw(Ogre::Degree(90));
-  _sceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+  Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
+  Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
+  _sceneManager->getRootSceneNode()->addChild(ntablero);
+  ntablero->attachObject(tablero);
+
+
+    /* Sombras */
+    _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+    _sceneManager->setShadowColour(Ogre::ColourValue(0.5, 0.5, 0.5) );
+    _sceneManager->setAmbientLight(Ogre::ColourValue(0.9, 0.9, 0.9));
+    _sceneManager->setShadowTextureCount(2);
+    _sceneManager->setShadowTextureSize(512);
+
+    /* Iluminacion */
+    Ogre::Light *light = _sceneManager->createLight("Light");
+    light->setType(Ogre::Light::LT_SPOTLIGHT);
+    light->setDirection(Ogre::Vector3(0,-1,0));
+    light->setSpotlightInnerAngle(Ogre::Degree(25.0f));
+    light->setSpotlightOuterAngle(Ogre::Degree(200.0f));
+    light->setPosition(0, 150, 0);
+    light->setSpecularColour(1, 1, 1);
+    light->setDiffuseColour(1, 1, 1);
+    light->setSpotlightFalloff(5.0f);
+    light->setCastShadows(true);
 }
