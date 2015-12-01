@@ -13,10 +13,28 @@
  * General Public License for more details.  
  *********************************************************************/
 #include "Hundir.h"
+#include "Tablero.h"
+#include "Barco.h"
+#include <vector>
 
 int main() {
-  Hundir app;
-  app.start();
+  //Hundir app;
+  //app.start();
+  std::vector <Barco*> barcos;
+  Barco* b1 = new Barco("Portaviones", 5);
+  barcos.push_back(b1);
+  Barco* b5 = new Barco("Portaviones2", 5);
+  barcos.push_back(b5);
+  Barco* b2 = new Barco("Artillero", 3);
+  barcos.push_back(b2);
+  Barco* b3 = new Barco("Artillero2", 3);
+  barcos.push_back(b3);
+  Barco* b4 = new Barco("Lancha1", 1);
+  barcos.push_back(b4);
+  Barco* b6 = new Barco("Lancha2", 1);
+  barcos.push_back(b6);
+  Tablero tab;
+  tab.crearTablero(barcos);
 
   return 0;
 }

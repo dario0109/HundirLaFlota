@@ -7,22 +7,21 @@
 using namespace std;
 
 class Barco{
-	public:
-		Barco(std::string nombre, int vida, vector<int> posiciones);
-		void setNombre(std::string nombre);
-		void setVida(int vida);
-		void setPosiciones(vector<int> posiciones);
-
-		std::string getNombre();
-		int getVida();
-		vector<int>* getPosiciones();
-		
-		
-
-	private:
-		std::string _nombre;
-		int _vida;
-		vector<int> _posiciones;
+public:
+  Barco(std::string nombre, int vida);
+  void setNombre(std::string nombre);
+  void setVida(int vida);
+  void setX(int x);
+  void setY(int y);
+  
+  std::string getNombre();
+  int getVida();
+  int getX();
+  int getY();
+  
+private:
+  std::string _nombre;
+  int _vida, _x, _y;
 };//Fin Barco
 
 #endif
