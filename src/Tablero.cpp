@@ -59,7 +59,6 @@ void Tablero::rellenar(){
       }
     }
   }
-  printTablero();
 }
 
 bool Tablero::colocado(int idx, int idxf, int idy, int idyf){
