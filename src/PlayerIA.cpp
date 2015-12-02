@@ -22,5 +22,5 @@ void PlayerIA::setNombre(std::string n){_nombre = n;}
 
 void PlayerIA::printState(){
   std::cout << "Jugador:" << _nombre << " Estado:" << std::endl;
-  //_tab.printTablero();
+  _tab->printTablero();
 }

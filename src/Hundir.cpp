@@ -132,8 +132,4 @@ void Hundir::generarPlayers(){
   p2 = new PlayerIA();
   p2->crearPlayer("IA Player 2", t2, barcos2);
   p2->printState();
-  std::cout << "printTablero 1" << std::endl;
-  t1->printTablero();
-  std::cout << "printTablero 2" << std::endl;
-  t2->printTablero();
 }
