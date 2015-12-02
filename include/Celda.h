@@ -10,7 +10,6 @@ class Celda{
   int getX() const;
   int getY() const;
   int getEstado() const;
-  bool getAtacada() const;
   Ogre::SceneNode* getNodo() const;
 
   void setX(int x);

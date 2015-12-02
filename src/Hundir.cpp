@@ -1,19 +1,10 @@
-/*********************************************************************
- * Módulo 2. Curso de Experto en Desarrollo de Videojuegos
- * Autor: Carlos González Morcillo     Carlos.Gonzalez@uclm.es
- *
- * You can redistribute and/or modify this file under the terms of the
- * GNU General Public License ad published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * and later version. See <http://www.gnu.org/licenses/>.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.  
- *********************************************************************/
+//#include <vector>
 
-#include "Hundir.h" 
+#include "Hundir.h"
+#include "Barco.h"
+#include "PlayerIA.h"
+
+using namespace std;
 
 Hundir::Hundir() {
   _sceneManager = NULL;
@@ -103,4 +94,37 @@ void Hundir::createScene() {
     light->setDiffuseColour(1, 1, 1);
     light->setSpotlightFalloff(5.0f);
     light->setCastShadows(true);
+}
+/*Riballo modificaciones*/
+vector<Barco*> Hundir::generarBarcos(){
+  std::vector <Barco*> barcos;
+  Barco* b1 = new Barco("Portaviones", 5);
+  barcos.push_back(b1);
+  Barco* b2 = new Barco("Artillero 1", 3);
+  barcos.push_back(b2);
+  Barco* b3 = new Barco("Artillero 2", 3);
+  barcos.push_back(b3);
+  Barco* b4 = new Barco("Lancha 1", 1);
+  barcos.push_back(b4);
+  Barco* b5 = new Barco("Lancha 2", 1);
+  barcos.push_back(b5);
+  Barco* b6 = new Barco("Lancha 3", 1);
+  barcos.push_back(b6);
+
+  return barcos;
+}
+void Hundir::generarPlayers(){
+  vector <Barco*> barcos1 = generarBarcos();
+  Tablero t1;
+  t1.crearTablero(8, barcos1);
+  PlayerIA* p1;
+  p1 = new PlayerIA();
+  p1->crearPlayer("IA Player 1", t1, barcos1);
+  p1->printState();
+  delete(p1);
+  /*vector <Barco*> barcos2 = generarBarcos();
+  Tablero t2;
+  t2.crearTablero(8, barcos2);
+  _p2->crearPlayer("IA Player 2", t2, barcos2);
+  _p2->printState();*/
 }
