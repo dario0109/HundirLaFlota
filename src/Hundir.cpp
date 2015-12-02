@@ -121,7 +121,6 @@ void Hundir::generarPlayers(){
   p1 = new PlayerIA();
   p1->crearPlayer("IA Player 1", t1, barcos1);
   p1->printState();
-  delete(p1);
   /*vector <Barco*> barcos2 = generarBarcos();
   Tablero t2;
   t2.crearTablero(8, barcos2);
