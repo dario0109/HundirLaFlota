@@ -3,6 +3,7 @@
 #include "Hundir.h"
 #include "Barco.h"
 #include "PlayerIA.h"
+#include <unistd.h>
 
 using namespace std;
 
@@ -41,6 +42,7 @@ int Hundir::start() {
   
   loadResources();
   createScene();
+  generarPlayers();
   
   _framelistener = new MyFrameListener();
   _root->addFrameListener(_framelistener);
@@ -115,15 +117,23 @@ vector<Barco*> Hundir::generarBarcos(){
 }
 void Hundir::generarPlayers(){
   vector <Barco*> barcos1 = generarBarcos();
-  Tablero t1;
-  t1.crearTablero(8, barcos1);
+  Tablero* t1;
+  t1 = new Tablero();
+  t1->crearTablero(8, barcos1);
   PlayerIA* p1;
   p1 = new PlayerIA();
   p1->crearPlayer("IA Player 1", t1, barcos1);
   p1->printState();
-  /*vector <Barco*> barcos2 = generarBarcos();
-  Tablero t2;
-  t2.crearTablero(8, barcos2);
-  _p2->crearPlayer("IA Player 2", t2, barcos2);
-  _p2->printState();*/
+  vector <Barco*> barcos2 = generarBarcos();
+  Tablero* t2;
+  t2 = new Tablero();
+  t2->crearTablero(8, barcos2);
+  PlayerIA* p2;
+  p2 = new PlayerIA();
+  p2->crearPlayer("IA Player 2", t2, barcos2);
+  p2->printState();
+  std::cout << "printTablero 1" << std::endl;
+  t1->printTablero();
+  std::cout << "printTablero 2" << std::endl;
+  t2->printTablero();
 }

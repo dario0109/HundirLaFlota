@@ -41,6 +41,7 @@ void Tablero::rellenar(){
   int idx, idy, idxf, idyf, orientation;
   srand(time(NULL));
   /*Colocacion de barcos*/
+  usleep(1000000);
   for(unsigned int i = 0; i < _barcos.size(); i++){
     while(true){
       orientation = rand() % 2;//0->hor 1->ver

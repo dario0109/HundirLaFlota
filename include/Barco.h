@@ -11,17 +11,17 @@ public:
   Barco(std::string nombre, int vida);
   void setNombre(std::string nombre);
   void setVida(int vida);
-  /*  void setX(int x);
+  void setX(int x);
   void setY(int y);
-  void setDir(int d);*/
+  void setDir(int d);
   
   std::string getNombre();
   int getVida();
-  /*int getX();
+  int getX();
   int getY();
-  int getDir();*/
+  int getDir();
 private:
   std::string _nombre;
-  int _vida/*, _x, _y, _dir*/;
+  int _vida, _x, _y, _dir;
 };
 #endif

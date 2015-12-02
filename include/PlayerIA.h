@@ -11,11 +11,11 @@ public:
   PlayerIA();
   ~PlayerIA();
 
-  void crearPlayer(std::string n, Tablero t,  std::vector<Barco*> barcos);
+  void crearPlayer(std::string n, Tablero* t,  std::vector<Barco*> barcos);
 
   int getVida();
   std::vector<Barco*> getBarcos();
-  Tablero getTablero();
+  Tablero* getTablero();
   std::string getNombre();
 
   void setVida(int v);
@@ -24,7 +24,7 @@ public:
   void printState();
 private:
   std::string _nombre;
-  Tablero _tab;
+  Tablero* _tab;
   std::vector<Barco*> _barcos;
   int _vida;
 };

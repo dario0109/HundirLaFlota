@@ -15,11 +15,11 @@
 #include "MyFrameListener.h"
 
 bool MyFrameListener::frameStarted(const Ogre::FrameEvent& evt) {
-  std::cout << "Frame started" << std::endl;
+  //std::cout << "Frame started" << std::endl;
   return true;
 }
 
 bool MyFrameListener::frameEnded(const Ogre::FrameEvent& evt)  {
-  std::cout << "Frame ended" << std::endl;
+  //std::cout << "Frame ended" << std::endl;
   return true;
 }
