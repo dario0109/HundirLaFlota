@@ -10,9 +10,6 @@ int main() {
   app = new Hundir();
   app->start();
   
-  //Ya tenemos dos tableros aleatorios y distintos, ahora a atacar
-
   delete(app);
-  
   return 0;
 }

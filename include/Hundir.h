@@ -1,8 +1,8 @@
 #include <Ogre.h>
 #include "MyFrameListener.h"
-#include "Tablero.h"//
-#include "Barco.h"//
-#include <vector>//
+#include "Tablero.h"
+#include "Barco.h"
+#include <vector>
 #include "PlayerIA.h"
 
 class Hundir{  
@@ -24,7 +24,9 @@ public:
   PlayerIA* getPlayer2();
   void setPlayer1(PlayerIA* p1);
   void setPlayer2(PlayerIA* p2);
-  vector<Barco*> generarBarcos();//
-  Tablero generarTablero(int dim);//
+  vector<Barco*> generarBarcos();
+  Tablero generarTablero(int dim);
   void generarPlayers();
+  void simular();
+  Celda* selCelda(int nplayer);
 };

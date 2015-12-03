@@ -43,6 +43,7 @@ int Hundir::start() {
   loadResources();
   createScene();
   generarPlayers();
+  simular();
   
   _framelistener = new MyFrameListener();
   _root->addFrameListener(_framelistener);
@@ -117,19 +118,57 @@ vector<Barco*> Hundir::generarBarcos(){
 }
 void Hundir::generarPlayers(){
   vector <Barco*> barcos1 = generarBarcos();
-  Tablero* t1;
-  t1 = new Tablero();
+  Tablero* t1 = new Tablero();
   t1->crearTablero(8, barcos1);
-  PlayerIA* p1;
-  p1 = new PlayerIA();
-  p1->crearPlayer("IA Player 1", t1, barcos1);
-  p1->printState();
+  _p1 = new PlayerIA();
+  _p1->crearPlayer("IA Player 1", t1, barcos1);
+  _p1->printState();
   vector <Barco*> barcos2 = generarBarcos();
-  Tablero* t2;
-  t2 = new Tablero();
+  Tablero* t2 = new Tablero();
   t2->crearTablero(8, barcos2);
-  PlayerIA* p2;
-  p2 = new PlayerIA();
-  p2->crearPlayer("IA Player 2", t2, barcos2);
-  p2->printState();
+  _p2 = new PlayerIA();
+  _p2->crearPlayer("IA Player 2", t2, barcos2);
+  _p2->printState();
+}
+void Hundir::simular(){
+  int acierto = -1;
+  Celda* aux;
+  while(true){
+    std::cout << "Jugador 1 ataca y... ";
+    do{
+      aux = selCelda(1);
+      acierto = (_p2->getTablero())->onClick(aux);//selCelda(1));//_p2->getTablero()->getCelda(rx,ry));
+    }while(acierto<0);//mientras no se pulse una casilla no pulsada
+    std::cout << " en la posicion (" << aux->getX()+1 << ","<< aux->getY()+1 <<")"<<'\n';
+    if(acierto>0){_p2->setVida(_p2->getVida()-1);}
+    if(_p2->getVida()<1){
+      std::cout << "Gana el jugador 1!" << '\n';
+      break;
+    }
+    
+    std::cout << "Jugador 2 ataca y... ";
+    do{
+      aux = selCelda(2);
+      acierto = _p1->getTablero()->onClick(aux);//_p1->getTablero()->getCelda(rx,ry));
+    }while(acierto<0);//mientras no se pulse una casilla no pulsada
+    std::cout << "en la posicion (" << aux->getX()+1 << ","<< aux->getY()+1 <<")"<<'\n';
+    if(acierto>0){_p1->setVida(_p1->getVida()-1);}
+    if(_p1->getVida()<1){
+      std::cout << "Gana el jugador 2!" << '\n';
+      break;
+    }
+  }
+}
+Celda* Hundir::selCelda(int nplayer){
+  Celda* aux;
+  int rand = random();
+  if(nplayer==2){
+    aux = _p1->getTablero()->getRest()->at(rand%(_p1->getTablero()->getRest()->size()));
+    _p1->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p1->getTablero()->getRest()->size()));
+  }
+  else{
+    aux =  _p2->getTablero()->getRest()->at(rand%(_p2->getTablero()->getRest()->size()));
+    _p2->getTablero()->getRest()->erase(_p2->getTablero()->getRest()->begin() + rand%(_p2->getTablero()->getRest()->size()));
+  }
+  return aux;
 }
