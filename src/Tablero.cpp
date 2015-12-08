@@ -42,6 +42,7 @@ Celda* Tablero::getCelda(int x, int y){
   return aux;
 }
 
+Celda** Tablero::getTablero(){return _tab;}
 void Tablero::rellenar(){
   int idx, idy, idxf, idyf, orientation;
   srand(time(NULL));

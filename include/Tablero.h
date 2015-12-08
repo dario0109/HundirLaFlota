@@ -32,6 +32,7 @@ public:
   int getCClick();
   Celda* getCelda(int x, int y);
   Celda* getCelda(Ogre::String nombre_nodo);
+  Celda** getTablero();
   int onClick(Celda *cel);
   
   static Tablero& getSingleton();

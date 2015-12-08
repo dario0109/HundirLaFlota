@@ -28,5 +28,5 @@ public:
   Tablero generarTablero(int dim);
   void generarPlayers();
   void simular();
-  Celda* selCelda(int nplayer);
+  Celda* selCelda(int nplayer, Celda& anterior);
 };

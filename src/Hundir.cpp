@@ -132,43 +132,102 @@ void Hundir::generarPlayers(){
 }
 void Hundir::simular(){
   int acierto = -1;
-  Celda* aux;
+  Celda* aux1, aux11,* aux2, aux22;
+  int i = 0;
+  int j = 0;
   while(true){
+    i++;
+    std::cout << "Turno " << i << '\n';
+    std::cout << "Vida J1 = " << _p1->getVida() << '\n';
+    std::cout << "Vida J2 = " << _p2->getVida() << '\n';
     std::cout << "Jugador 1 ataca y... ";
+    j = 0;
     do{
-      aux = selCelda(1);
-      acierto = (_p2->getTablero())->onClick(aux);//selCelda(1));//_p2->getTablero()->getCelda(rx,ry));
-    }while(acierto<0);//mientras no se pulse una casilla no pulsada
-    std::cout << " en la posicion (" << aux->getX()+1 << ","<< aux->getY()+1 <<")"<<'\n';
-    if(acierto>0){_p2->setVida(_p2->getVida()-1);}
+      aux1 = selCelda(1, aux11);
+      acierto = (_p2->getTablero())->onClick(aux1);
+      if(j>64){aux11.setX(-1);}//chapuza aqui
+      j++;
+    }while(acierto<0);
+    std::cout << " en la posicion (" << aux1->getX()+1 << ","<< aux1->getY()+1 <<")"<<'\n';
+    if(acierto>0){
+      _p2->setVida(_p2->getVida()-1);
+      if(acierto<2){aux11 = *aux1;}
+      else{aux11.setX(-1);}
+    }
     if(_p2->getVida()<1){
       std::cout << "Gana el jugador 1!" << '\n';
       break;
     }
-    
     std::cout << "Jugador 2 ataca y... ";
+    j=0;
     do{
-      aux = selCelda(2);
-      acierto = _p1->getTablero()->onClick(aux);//_p1->getTablero()->getCelda(rx,ry));
-    }while(acierto<0);//mientras no se pulse una casilla no pulsada
-    std::cout << "en la posicion (" << aux->getX()+1 << ","<< aux->getY()+1 <<")"<<'\n';
-    if(acierto>0){_p1->setVida(_p1->getVida()-1);}
+      aux2 = selCelda(2, aux22);
+      acierto = _p1->getTablero()->onClick(aux2);
+      if(j>64){aux22.setX(-1);}//chapuza aqui
+      j++;
+    }while(acierto<0);
+    std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
+    if(acierto>0){
+      _p1->setVida(_p1->getVida()-1);
+      if(acierto<2){aux22 = *aux2;}
+      else{aux22.setX(-1);}
+    }
     if(_p1->getVida()<1){
       std::cout << "Gana el jugador 2!" << '\n';
       break;
     }
   }
 }
-Celda* Hundir::selCelda(int nplayer){
+Celda* Hundir::selCelda(int nplayer, Celda &anterior){
   Celda* aux;
-  int rand = random();
-  if(nplayer==2){
-    aux = _p1->getTablero()->getRest()->at(rand%(_p1->getTablero()->getRest()->size()));
-    _p1->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p1->getTablero()->getRest()->size()));
+  int rand = random(), rand2 = random();
+  if(nplayer == 2){
+    if(anterior.getX()>-1){
+      if(rand%2 > 0){
+	if(anterior.getX()<7){
+	  aux =_p1->getTablero()->getCelda(anterior.getX()+1, anterior.getY());
+	}
+	else if(anterior.getX()>-1){
+	  aux =_p1->getTablero()->getCelda(anterior.getX()-1, anterior.getY());
+	}
+      }
+      else{
+	if(anterior.getY()<7){
+	  aux =_p1->getTablero()->getCelda(anterior.getX(), anterior.getY()+1);
+	}
+	else{
+	  aux =_p1->getTablero()->getCelda(anterior.getX(), anterior.getY()-1);
+	}
+      }
+    }
+    else{
+      aux = _p1->getTablero()->getCelda(rand%8, rand2%8);//getRest()->at(rand%(_p1->getTablero()->getRest()->size()));
+      //_p1->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p1->getTablero()->getRest()->size()));
+    }
   }
   else{
-    aux =  _p2->getTablero()->getRest()->at(rand%(_p2->getTablero()->getRest()->size()));
-    _p2->getTablero()->getRest()->erase(_p2->getTablero()->getRest()->begin() + rand%(_p2->getTablero()->getRest()->size()));
+    if(anterior.getX()>-1){
+      if(rand%2>0){
+	if(anterior.getX()<7){
+	  aux =_p2->getTablero()->getCelda(anterior.getX()+1, anterior.getY());
+	}
+	else{
+	  aux =_p2->getTablero()->getCelda(anterior.getX()-1, anterior.getY());
+	}
+      }
+      else{
+	if(anterior.getY()<7){
+	  aux =_p2->getTablero()->getCelda(anterior.getX(), anterior.getY()+1);
+	}
+	else{
+	  aux =_p2->getTablero()->getCelda(anterior.getX(), anterior.getY()-1);
+	}
+      }
+    }
+    else{
+      aux = _p2->getTablero()->getCelda(rand%8, rand2%8);//getRest()->at(rand%(_p2->getTablero()->getRest()->size()));
+      //_p2->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p2->getTablero()->getRest()->size()));
+    }
   }
   return aux;
 }
