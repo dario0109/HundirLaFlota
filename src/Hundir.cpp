@@ -45,7 +45,7 @@ int Hundir::start() {
   generarPlayers();
   simular();
   
-  _framelistener = new MyFrameListener();
+  _framelistener = new MyFrameListener(window, cam);
   _root->addFrameListener(_framelistener);
   
   _root->startRendering();
@@ -73,10 +73,47 @@ void Hundir::loadResources() {
 }
 
 void Hundir::createScene() {
+  double ini_x, x, z, tam_celda;
+  int n_celdas;
+  std::stringstream sncasilla, sentity;
+
+   /* Nodo base */
+  Ogre::Entity *ent = NULL;
+  Ogre::SceneNode *nodo_cel = NULL;
+
   Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
   Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
+
+  tam_celda = 2; z = -15.5; ini_x= -7.5; n_celdas= 8;
+
+    /* Igualamos x la posicion inicial */
+    x = ini_x;
+    for(int f = 0; f < n_celdas; f++){
+        for(int c = 0; c < n_celdas; c++){
+            /* Nombre del nodo para esa celda */
+            sncasilla << "C" << f << "_"<< c;
+            /* Creamos el nodo para una determinada celda */
+            nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 0.4, z));
+            /* Para ese nodo creamos sus dos posibles visualizaciones */
+            /* Visualizacion estandar */
+            ent = _sceneManager->createEntity("Casilla.mesh");
+            //ent->setQueryFlags(CLICK);
+            //ent->setVisible(false);
+            nodo_cel->attachObject(ent);
+
+           
+            x += tam_celda; sncasilla.str(""); sentity.str("");
+        }//Fin for
+        x = ini_x;
+        if (z==-1.5){//If para saltar la barrera que divide al tablero
+          z = 1.5;
+        } else {
+          z += tam_celda; 
+        }
+    }//Fin for
+
 
 
     /* Sombras */
