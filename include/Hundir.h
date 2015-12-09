@@ -20,15 +20,14 @@ public:
   int start();
   void loadResources();
   void createScene();
-  void createOverlay();
+  std::vector<Barco*> generarBarcos();
+  void generarPlayers();
+  void simular();
+  Celda* selCelda(int nplayer, Celda *anterior);
   
+  /*Tablero generarTablero(int dim);
   PlayerIA* getPlayer1();
   PlayerIA* getPlayer2();
   void setPlayer1(PlayerIA* p1);
-  void setPlayer2(PlayerIA* p2);
-  std::vector<Barco*> generarBarcos();
-  Tablero generarTablero(int dim);
-  void generarPlayers();
-  void simular();
-  Celda* selCelda(int nplayer, Celda& anterior);
+  void setPlayer2(PlayerIA* p2);*/
 };

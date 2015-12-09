@@ -24,3 +24,13 @@ void PlayerIA::printState(){
   std::cout << "Jugador:" << _nombre << " Estado:" << std::endl;
   _tab->printTablero();
 }
+
+std::vector<Celda*> PlayerIA::getTocados(){return _tocados;}
+void PlayerIA::setTocados(std::vector<Celda*> toc){_tocados = toc;}
+void PlayerIA::pushTocado(Celda* c){_tocados.push_back(c);}
+Celda* PlayerIA::popTocado(){
+  Celda* aux;
+  aux = _tocados.at(_tocados.size()-1);
+  _tocados.erase(_tocados.begin() + _tocados.size() -1);
+  return aux;
+}

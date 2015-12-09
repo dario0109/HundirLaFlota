@@ -107,11 +107,10 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     mask = STAGE | CUBE1 | CUBE2;  // Podemos elegir todo
 
     Ray r = setRayQuery(posx, posy, mask);
-    RaySceneQueryResult &result = _raySceneQuery->execute();
+    RaySceneQueryResult result = _raySceneQuery->execute();
     RaySceneQueryResult::iterator it;
     it = result.begin();
-
-    std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
+    std::cout << it/*->movable->getParentSceneNode()*/->getName() <<std::endl;
 /*
     if (it != result.end()) {
       if (mbleft) {

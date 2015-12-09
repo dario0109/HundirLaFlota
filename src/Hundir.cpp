@@ -1,4 +1,4 @@
-//#include <vector>
+#include <vector>
 
 #include "Hundir.h"
 #include "Barco.h"
@@ -43,8 +43,8 @@ int Hundir::start() {
   loadResources();
   createScene();
 
-   //generarPlayers();
-  //simular();
+  generarPlayers();
+  simular();
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
   _root->startRendering();
@@ -162,7 +162,9 @@ void Hundir::generarPlayers(){
 }
 void Hundir::simular(){
   int acierto = -1;
-  Celda* aux1, aux11,* aux2, aux22;
+  Celda* aux1,* aux11,* aux2,* aux22;
+  aux11 = new Celda();
+  aux22 = new Celda();
   int i = 0;
   int j = 0;
   while(true){
@@ -172,17 +174,21 @@ void Hundir::simular(){
     std::cout << "Vida J2 = " << _p2->getVida() << '\n';
     std::cout << "Jugador 1 ataca y... ";
     j = 0;
+    if(aux11->getX()<0 && _p1->getTocados().size() > 0){aux11 = _p1->popTocado();}
     do{
       aux1 = selCelda(1, aux11);
       acierto = (_p2->getTablero())->onClick(aux1);
-      if(j>64){aux11.setX(-1);}//chapuza aqui
+      if(j>16){aux11->setX(-1);}//chapuza aqui
       j++;
     }while(acierto<0);
     std::cout << " en la posicion (" << aux1->getX()+1 << ","<< aux1->getY()+1 <<")"<<'\n';
     if(acierto>0){
       _p2->setVida(_p2->getVida()-1);
-      if(acierto<2){aux11 = *aux1;}
-      else{aux11.setX(-1);}
+      if(acierto<2){
+	aux11 = aux1;
+	_p1->pushTocado(aux1);
+      }
+      else{aux11->setX(-1);}
     }
     if(_p2->getVida()<1){
       std::cout << "Gana el jugador 1!" << '\n';
@@ -190,17 +196,22 @@ void Hundir::simular(){
     }
     std::cout << "Jugador 2 ataca y... ";
     j=0;
+
+    if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
     do{
       aux2 = selCelda(2, aux22);
       acierto = _p1->getTablero()->onClick(aux2);
-      if(j>64){aux22.setX(-1);}//chapuza aqui
+      if(j>16){aux22->setX(-1);}//chapuza aqui
       j++;
     }while(acierto<0);
     std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
     if(acierto>0){
       _p1->setVida(_p1->getVida()-1);
-      if(acierto<2){aux22 = *aux2;}
-      else{aux22.setX(-1);}
+      if(acierto<2){
+	aux22 = aux2;
+	_p2->pushTocado(aux2);
+      }
+      else{aux22->setX(-1);}
     }
     if(_p1->getVida()<1){
       std::cout << "Gana el jugador 2!" << '\n';
@@ -208,56 +219,34 @@ void Hundir::simular(){
     }
   }
 }
-Celda* Hundir::selCelda(int nplayer, Celda &anterior){
+Celda* Hundir::selCelda(int nplayer, Celda *anterior){
   Celda* aux;
   int rand = random(), rand2 = random();
   if(nplayer == 2){
-    if(anterior.getX()>-1){
+    if(anterior->getX()>-1){
       if(rand%2 > 0){
-	if(anterior.getX()<7){
-	  aux =_p1->getTablero()->getCelda(anterior.getX()+1, anterior.getY());
-	}
-	else if(anterior.getX()>-1){
-	  aux =_p1->getTablero()->getCelda(anterior.getX()-1, anterior.getY());
-	}
+	if(anterior->getX()<7){aux =_p1->getTablero()->getCelda(anterior->getX()+1, anterior->getY());}
+	else if(anterior->getX()>-1){aux =_p1->getTablero()->getCelda(anterior->getX()-1, anterior->getY());}
       }
       else{
-	if(anterior.getY()<7){
-	  aux =_p1->getTablero()->getCelda(anterior.getX(), anterior.getY()+1);
-	}
-	else{
-	  aux =_p1->getTablero()->getCelda(anterior.getX(), anterior.getY()-1);
-	}
+	if(anterior->getY()<7){aux =_p1->getTablero()->getCelda(anterior->getX(), anterior->getY()+1);}
+	else{aux =_p1->getTablero()->getCelda(anterior->getX(), anterior->getY()-1);}
       }
     }
-    else{
-      aux = _p1->getTablero()->getCelda(rand%8, rand2%8);//getRest()->at(rand%(_p1->getTablero()->getRest()->size()));
-      //_p1->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p1->getTablero()->getRest()->size()));
-    }
+    else{aux = _p1->getTablero()->getCelda(rand%8, rand2%8);}
   }
   else{
-    if(anterior.getX()>-1){
+    if(anterior->getX()>-1){
       if(rand%2>0){
-	if(anterior.getX()<7){
-	  aux =_p2->getTablero()->getCelda(anterior.getX()+1, anterior.getY());
-	}
-	else{
-	  aux =_p2->getTablero()->getCelda(anterior.getX()-1, anterior.getY());
-	}
+	if(anterior->getX()<7){aux =_p2->getTablero()->getCelda(anterior->getX()+1, anterior->getY());}
+	else{aux =_p2->getTablero()->getCelda(anterior->getX()-1, anterior->getY());}
       }
       else{
-	if(anterior.getY()<7){
-	  aux =_p2->getTablero()->getCelda(anterior.getX(), anterior.getY()+1);
-	}
-	else{
-	  aux =_p2->getTablero()->getCelda(anterior.getX(), anterior.getY()-1);
-	}
+	if(anterior->getY()<7){aux =_p2->getTablero()->getCelda(anterior->getX(), anterior->getY()+1);}
+	else{aux =_p2->getTablero()->getCelda(anterior->getX(), anterior->getY()-1);}
       }
     }
-    else{
-      aux = _p2->getTablero()->getCelda(rand%8, rand2%8);//getRest()->at(rand%(_p2->getTablero()->getRest()->size()));
-      //_p2->getTablero()->getRest()->erase(_p1->getTablero()->getRest()->begin() + rand%(_p2->getTablero()->getRest()->size()));
-    }
+    else{aux = _p2->getTablero()->getCelda(rand%8, rand2%8);}
   }
   return aux;
 }

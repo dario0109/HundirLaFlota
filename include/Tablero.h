@@ -19,34 +19,34 @@ public:
   Tablero();
   ~Tablero();
   
+  void crearTablero(int dim, std::vector<Barco*>barcos);
   void limpiarTablero();
   void reiniciarTablero();
-  void swapShips();
-  bool Click(Ogre::String nombre_nodo);
-  void crearTablero(int dim, std::vector<Barco*>barcos);
-  void addToMap(Ogre::String nombre_nodo, Celda *cel);
-  bool colocado(int idx, int idxf, int idy, int idyf);
-  void printTablero();
-  std::vector <Celda*>* getRest();
-  void setRest(std::vector <Celda*> *rest);
-  int getCClick();
   Celda* getCelda(int x, int y);
-  Celda* getCelda(Ogre::String nombre_nodo);
-  Celda** getTablero();
+  bool colocado(int idx, int idxf, int idy, int idyf);
   int onClick(Celda *cel);
-  
+  void printTablero();
+
+  /*std::vector <Celda*>* getRest();
+  void setRest(std::vector <Celda*> *rest);
+  Celda** getTablero();
   static Tablero& getSingleton();
   static Tablero* getSingletonPtr();
+  void swapShips();
+  bool Click(Ogre::String nombre_nodo);
+  void addToMap(Ogre::String nombre_nodo, Celda *cel);
+  int getCClick();
+  Celda* getCelda(Ogre::String nombre_nodo);*/
 
 private:
   int _dim;
   Celda **_tab;
   std::vector <Barco*> _barcos;
-  std::vector <Celda*> *_rest;//celdas sin atacar
-  std::map<Ogre::String, Celda*> _relaciones;
+  //std::vector <Celda*> *_rest;//celdas sin atacar
+  //std::map<Ogre::String, Celda*> _relaciones;
 
   void rellenar();
-  void swap(Ogre::SceneNode *nodo);
-  void descubrirAdyacentes(Celda *cel);
+  /*void swap(Ogre::SceneNode *nodo);
+    void descubrirAdyacentes(Celda *cel);*/
 };
 #endif

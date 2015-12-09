@@ -10,14 +10,14 @@ void Tablero::crearTablero(int dim, std::vector<Barco*> barcos){
   _dim = dim;
   _tab = new Celda*[_dim];
   _barcos = barcos;
-  _rest = new vector <Celda*>();
+  //_rest = new vector <Celda*>();
   for(int x = 0; x < _dim; x++){
     _tab[x] = new Celda[_dim];
     for(int y = 0; y < _dim; y++){
       _tab[x][y].setX(x);
       _tab[x][y].setY(y);
       _tab[x][y].setEstado(0);
-      _rest->push_back(&_tab[x][y]);
+      //_rest->push_back(&_tab[x][y]);
     }
   }
   rellenar();
@@ -41,12 +41,9 @@ Celda* Tablero::getCelda(int x, int y){
   Celda* aux = &_tab[x][y];
   return aux;
 }
-
-Celda** Tablero::getTablero(){return _tab;}
 void Tablero::rellenar(){
   int idx, idy, idxf, idyf, orientation;
   srand(time(NULL));
-  /*Colocacion de barcos*/
   usleep(1000000);
   for(unsigned int i = 0; i < _barcos.size(); i++){
     while(true){
@@ -83,7 +80,6 @@ bool Tablero::colocado(int idx, int idxf, int idy, int idyf){
 int Tablero::onClick(Celda *cel){
   int acierto = -1;
   int est = cel->getEstado();
-  //std::cout << "Estado = " << est << '\n';
   if(est == 0){
     std::cout << "Agua!" << '\n';
     _tab[cel->getX()][cel->getY()].setEstado(-1);
@@ -116,5 +112,6 @@ void Tablero::printTablero(){
   }
   std::cout << '\n';
 }
-std::vector<Celda*>* Tablero::getRest(){return _rest;}
-void Tablero::setRest(std::vector <Celda*> *rest){_rest = rest;}
+//std::vector<Celda*>* Tablero::getRest(){return _rest;}
+//void Tablero::setRest(std::vector <Celda*> *rest){_rest = rest;}
+//Celda** Tablero::getTablero(){return _tab;}
