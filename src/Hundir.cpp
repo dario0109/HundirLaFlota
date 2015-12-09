@@ -42,12 +42,11 @@ int Hundir::start() {
   
   loadResources();
   createScene();
-  generarPlayers();
-  simular();
-  
-  _framelistener = new MyFrameListener(window, cam);
+
+   //generarPlayers();
+  //simular();
+  _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
-  
   _root->startRendering();
   return 0;
 }
@@ -86,7 +85,7 @@ void Hundir::createScene() {
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
 
-  tam_celda = 2; z = -15.5; ini_x= -7.5; n_celdas= 8;
+  tam_celda = 2; z = 1.5; ini_x= -7; n_celdas= 8;
 
     /* Igualamos x la posicion inicial */
     x = ini_x;
@@ -95,26 +94,19 @@ void Hundir::createScene() {
             /* Nombre del nodo para esa celda */
             sncasilla << "C" << f << "_"<< c;
             /* Creamos el nodo para una determinada celda */
-            nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 0.4, z));
-            /* Para ese nodo creamos sus dos posibles visualizaciones */
-            /* Visualizacion estandar */
+            nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
+             /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
-            //ent->setQueryFlags(CLICK);
-            //ent->setVisible(false);
+            ent->setQueryFlags(CUBE1);
+            ent->setVisible(false);
             nodo_cel->attachObject(ent);
 
            
             x += tam_celda; sncasilla.str(""); sentity.str("");
         }//Fin for
         x = ini_x;
-        if (z==-1.5){//If para saltar la barrera que divide al tablero
-          z = 1.5;
-        } else {
-          z += tam_celda; 
-        }
+        z += tam_celda;  
     }//Fin for
-
-
 
     /* Sombras */
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
@@ -135,8 +127,9 @@ void Hundir::createScene() {
     light->setSpotlightFalloff(5.0f);
     light->setCastShadows(true);
 }
+
 /*Riballo modificaciones*/
-vector<Barco*> Hundir::generarBarcos(){
+std::vector<Barco*> Hundir::generarBarcos(){
   std::vector <Barco*> barcos;
   Barco* b1 = new Barco("Portaviones", 5);
   barcos.push_back(b1);
@@ -154,13 +147,13 @@ vector<Barco*> Hundir::generarBarcos(){
   return barcos;
 }
 void Hundir::generarPlayers(){
-  vector <Barco*> barcos1 = generarBarcos();
+  std::vector <Barco*> barcos1 = generarBarcos();
   Tablero* t1 = new Tablero();
   t1->crearTablero(8, barcos1);
   _p1 = new PlayerIA();
   _p1->crearPlayer("IA Player 1", t1, barcos1);
   _p1->printState();
-  vector <Barco*> barcos2 = generarBarcos();
+  std::vector <Barco*> barcos2 = generarBarcos();
   Tablero* t2 = new Tablero();
   t2->crearTablero(8, barcos2);
   _p2 = new PlayerIA();
