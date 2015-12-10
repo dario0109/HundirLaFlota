@@ -99,14 +99,7 @@ void Hundir::createScene() {
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
 	    /****************/
-	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
-	      snbarco << "B" << f << "_" << c;
-	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, -z));
-	      entbar = _sceneManager->createEntity("Barco.mesh");
-	      entbar->setQueryFlags(CUBE1);
-	      entbar->setVisible(true);
-	      nodo_bar->attachObject(entbar);
-	      }
+	    
 	    /****************/
              /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
@@ -114,6 +107,22 @@ void Hundir::createScene() {
             ent->setVisible(false);
             nodo_cel->attachObject(ent);
 
+	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
+	      snbarco << "B" << f << "_" << c;
+	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1,-z));
+	      entbar = _sceneManager->createEntity("Barco.mesh");
+	      entbar->setQueryFlags(CUBE1);
+	      entbar->setVisible(true);
+	      nodo_bar->attachObject(entbar);
+	      }
+	    if(_p2->getTablero()->getCelda(f,c)->getEstado()>0){
+	      snbarco << "B" << f << "_" << c;
+	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, z));
+	      entbar = _sceneManager->createEntity("Barco.mesh");
+	      entbar->setQueryFlags(CUBE1);
+	      entbar->setVisible(false);
+	      nodo_bar->attachObject(entbar);
+	    }
            
             x += tam_celda; sncasilla.str(""); sentity.str("");
         }//Fin for
