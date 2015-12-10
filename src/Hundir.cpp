@@ -40,12 +40,12 @@ int Hundir::start() {
   double height = viewport->getActualHeight();
   cam->setAspectRatio(width / height);
 
-  //generarPlayers();
+  generarPlayers();
   
   loadResources();
   createScene();
 
-  //simular();
+  simular();
   std::cout << "Antes MyFrameListener" << std::endl;
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
@@ -99,14 +99,14 @@ void Hundir::createScene() {
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
 	    /****************/
-	    /*if(_p1->getTablero()->getCelda(f,c)>0){
+	    if(_p1->getTablero()->getCelda(f,c)>0){
 	      snbarco << "B" << f << "_" << c;
 	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, z+2));
 	      entbar = _sceneManager->createEntity("Casilla.mesh");
 	      entbar->setQueryFlags(CUBE1);
-	      entbar->setVisible(false);
+	      entbar->setVisible(true);
 	      nodo_bar->attachObject(entbar);
-	      }*/
+	      }
 	    /****************/
              /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
