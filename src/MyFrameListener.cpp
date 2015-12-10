@@ -122,7 +122,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   if (mbleft) {  // Boton izquierdo o derecho -------------
   	uint32 mask;
     cout << "Boton Izquierdo" << endl;
-    mask = STAGE | CUBE1 | CUBE2;  // Podemos elegir todo
+    mask = CUBE1;  // Podemos elegir todo
 
     Ogre::Ray r = setRayQuery(posx, posy, mask);
     Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();

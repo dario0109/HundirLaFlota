@@ -86,6 +86,7 @@ void Hundir::createScene() {
 
   Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
   Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
+  //tablero->setQueryFlags(STAGE);
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
 
@@ -110,7 +111,7 @@ void Hundir::createScene() {
 	      nodo_bar = ntablero->createChildSceneNode(snbarco1.str(), Ogre::Vector3(x, 1,-z));
           std::cout << snbarco1.str() + "\n" << std::endl;
 	      entbar = _sceneManager->createEntity("Barco.mesh");
-	      entbar->setQueryFlags(CUBE1);
+	      entbar->setQueryFlags(STAGE);
 	      entbar->setVisible(true);
 	      nodo_bar->attachObject(entbar);
 	    }
@@ -118,7 +119,7 @@ void Hundir::createScene() {
 	      snbarco2 << "B2(" << f << "," << c << ")";
 	      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 	      entbar = _sceneManager->createEntity("Barco.mesh");
-	      entbar->setQueryFlags(CUBE1);
+	      entbar->setQueryFlags(STAGE);
 	      entbar->setVisible(true);/*cambiar a false*/
 	      nodo_bar->attachObject(entbar);
 	    }
