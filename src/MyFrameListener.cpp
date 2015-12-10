@@ -17,51 +17,59 @@
 MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm){
   OIS::ParamList param; size_t windowHandle;  ostringstream wHandleStr;
 
-  /****************/
-  /*param.insert(std::make_pair(std::string("WINDOW"), wHandleStr.str()));
-  param.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-  param.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
-  param.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
-  param.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));*/
-  /********************/
-
-  
   _camera = cam;
   _sceneManager = sm; _win = win;
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
   _win->getCustomAttribute("WINDOW", &windowHandle);
-  wHandleStr << windowHandle;
-  //param.insert(make_pair("WINDOW", wHandleStr.str()));
   param.insert(std::make_pair(std::string("WINDOW"), wHandleStr.str()));
   param.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
   param.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
-
-  _inputManager = OIS::InputManager::createInputSystem(param);
-  _keyboard = static_cast<OIS::Keyboard*>
-    (_inputManager->createInputObject(OIS::OISKeyboard,true /*false*/));
-  //_keyboard->setEventCallback(this);
   
+  std::cout << "Antes" << '\n';
+  
+  _inputManager = OIS::InputManager::createInputSystem(param);
+
+  std::cout << "Despues" << '\n';
+    
+  _keyboard = static_cast<OIS::Keyboard*>
+    (_inputManager->createInputObject(OIS::OISKeyboard, true));
+  //_keyboard->setEventCallback(this);
+  std::cout << "3" << '\n';
   _mouse = static_cast<OIS::Mouse*>
-    (_inputManager->createInputObject(OIS::OISMouse, true/*false*/));
-  /*_mouse->setEventCallback(this);/*
-  _mouse->getMouseState().width = _win->getWidth();
-  _mouse->getMouseState().height = _win->getHeight();*/
-  /**/
+    (_inputManager->createInputObject(OIS::OISMouse, true));
+  std::cout << "4" << '\n';
   int left, top;
   unsigned int width, height, depth;
   win->getMetrics(width, height, depth, left, top);
-  //this->setWindowExtents(width, height);
-  /**/
   _raySceneQuery = _sceneManager->createRayQuery(Ray());
   //_selectedNode = NULL;
 }
 
 MyFrameListener::~MyFrameListener() {
+  if(_inputManager) {
+        if(_keyboard) {
+            _inputManager->destroyInputObject(_keyboard);
+            _keyboard = 0;
+        }//Fin if
+
+        if(_mouse) {
+            _inputManager->destroyInputObject(_mouse);
+            _mouse = 0;
+        }//Fin if
+
+        OIS::InputManager::destroyInputSystem(_inputManager);
+
+        _inputManager = 0;
+
+        /*_keyListeners.clear();
+	  _mouseListeners.clear();*/
+  }
+	/*
   _inputManager->destroyInputObject(_keyboard);
   _inputManager->destroyInputObject(_mouse);
   _sceneManager->destroyQuery(_raySceneQuery);
-  OIS::InputManager::destroyInputSystem(_inputManager);
+  OIS::InputManager::destroyInputSystem(_inputManager);*/
 }
 
 Ray MyFrameListener::setRayQuery(int posx, int posy, uint32 mask) {
@@ -165,4 +173,4 @@ void MyFrameListener::mouseMoved(const OIS::MouseEvent &e){
     Ogre::OverlayElement *oe;
     oe = _overlayManager->getOverlayElement("cursor");
     oe->setLeft(e.state.X.abs);  oe->setTop(e.state.Y.abs);
-}
+    }

@@ -39,12 +39,14 @@ int Hundir::start() {
   double width = viewport->getActualWidth();
   double height = viewport->getActualHeight();
   cam->setAspectRatio(width / height);
+
+  generarPlayers();
   
   loadResources();
   createScene();
 
-  generarPlayers();
   simular();
+
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
   _root->startRendering();
@@ -74,11 +76,11 @@ void Hundir::loadResources() {
 void Hundir::createScene() {
   double ini_x, x, z, tam_celda;
   int n_celdas;
-  std::stringstream sncasilla, sentity;
+  std::stringstream sncasilla, snbarco, sentity;
 
    /* Nodo base */
-  Ogre::Entity *ent = NULL;
-  Ogre::SceneNode *nodo_cel = NULL;
+  Ogre::Entity *ent = NULL, *entbar = NULL;
+  Ogre::SceneNode *nodo_cel = NULL, *nodo_bar = NULL;
 
   Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
   Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
@@ -95,6 +97,16 @@ void Hundir::createScene() {
             sncasilla << "C" << f << "_"<< c;
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
+	    /****************/
+	    /*if(_p1->getTablero()->getCelda(f,c)>0){
+	      snbarco << "B" << f << "_" << c;
+	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, z+2));
+	      entbar = _sceneManager->createEntity("Casilla.mesh");
+	      entbar->setQueryFlags(CUBE1);
+	      entbar->setVisible(false);
+	      nodo_bar->attachObject(entbar);
+	      }*/
+	    /****************/
              /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
             ent->setQueryFlags(CUBE1);
@@ -127,8 +139,6 @@ void Hundir::createScene() {
     light->setSpotlightFalloff(5.0f);
     light->setCastShadows(true);
 }
-
-/*Riballo modificaciones*/
 std::vector<Barco*> Hundir::generarBarcos(){
   std::vector <Barco*> barcos;
   Barco* b1 = new Barco("Portaviones", 5);
@@ -153,6 +163,9 @@ void Hundir::generarPlayers(){
   _p1 = new PlayerIA();
   _p1->crearPlayer("IA Player 1", t1, barcos1);
   _p1->printState();
+
+  
+  
   std::vector <Barco*> barcos2 = generarBarcos();
   Tablero* t2 = new Tablero();
   t2->crearTablero(8, barcos2);
