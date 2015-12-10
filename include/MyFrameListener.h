@@ -25,6 +25,10 @@ private:
 
   Ray setRayQuery(int posx, int posy, uint32 mask);
 
+  void setWindowExtents(int width, int height);
+  
+  void mouseMoved(const OIS::MouseEvent &e);
+
 public:
   MyFrameListener(RenderWindow* win, Camera* cam, SceneManager* sm);
   ~MyFrameListener();

@@ -17,22 +17,42 @@
 MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm){
   OIS::ParamList param; size_t windowHandle;  ostringstream wHandleStr;
 
+  /****************/
+  /*param.insert(std::make_pair(std::string("WINDOW"), wHandleStr.str()));
+  param.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+  param.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+  param.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
+  param.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));*/
+  /********************/
+
+  
   _camera = cam;
   _sceneManager = sm; _win = win;
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
   _win->getCustomAttribute("WINDOW", &windowHandle);
   wHandleStr << windowHandle;
-  param.insert(make_pair("WINDOW", wHandleStr.str()));
-  
+  //param.insert(make_pair("WINDOW", wHandleStr.str()));
+  param.insert(std::make_pair(std::string("WINDOW"), wHandleStr.str()));
+  param.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+  param.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+
   _inputManager = OIS::InputManager::createInputSystem(param);
   _keyboard = static_cast<OIS::Keyboard*>
-    (_inputManager->createInputObject(OIS::OISKeyboard, false));
+    (_inputManager->createInputObject(OIS::OISKeyboard,true /*false*/));
+  //_keyboard->setEventCallback(this);
+  
   _mouse = static_cast<OIS::Mouse*>
-    (_inputManager->createInputObject(OIS::OISMouse, false));
+    (_inputManager->createInputObject(OIS::OISMouse, true/*false*/));
+  /*_mouse->setEventCallback(this);/*
   _mouse->getMouseState().width = _win->getWidth();
-  _mouse->getMouseState().height = _win->getHeight();
-
+  _mouse->getMouseState().height = _win->getHeight();*/
+  /**/
+  int left, top;
+  unsigned int width, height, depth;
+  win->getMetrics(width, height, depth, left, top);
+  //this->setWindowExtents(width, height);
+  /**/
   _raySceneQuery = _sceneManager->createRayQuery(Ray());
   //_selectedNode = NULL;
 }
@@ -45,7 +65,7 @@ MyFrameListener::~MyFrameListener() {
 }
 
 Ray MyFrameListener::setRayQuery(int posx, int posy, uint32 mask) {
-  Ray rayMouse = _camera->getCameraToViewportRay
+  Ogre::Ray rayMouse = _camera->getCameraToViewportRay
     (posx/float(_win->getWidth()), posy/float(_win->getHeight()));
   _raySceneQuery->setRay(rayMouse);
   _raySceneQuery->setSortByDistance(true);
@@ -106,12 +126,12 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     cout << "Boton Izquierdo" << endl;
     mask = STAGE | CUBE1 | CUBE2;  // Podemos elegir todo
 
-    Ray r = setRayQuery(posx, posy, mask);
-    RaySceneQueryResult result = _raySceneQuery->execute();
-    RaySceneQueryResult::iterator it;
+    Ogre::Ray r = setRayQuery(posx, posy, mask);
+    Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
+    Ogre::RaySceneQueryResult::iterator it;
     it = result.begin();
-    std::cout << it/*->movable->getParentSceneNode()*/->getName() <<std::endl;
-/*
+    //std::cout << it->movable->getParentSceneNode()->getName() <<std::endl;
+
     if (it != result.end()) {
       if (mbleft) {
 	if (it->movable->getParentSceneNode()->getName() == "Col_Suelo") {
@@ -127,16 +147,22 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       }
       _selectedNode = it->movable->getParentSceneNode();
       _selectedNode->showBoundingBox(true);
-    }
-*/
-  }
+      }
 
-
-/*
-  OverlayElement *oe;
-  oe = _overlayManager->getOverlayElement("cursor");
-  oe->setLeft(posx);  oe->setTop(posy);
-*/
-  
+  }  
   return true;
+}
+
+
+/*void MyFrameListener::setWindowExtents(int width, int height){
+
+    const OIS::MouseState &mouseState = _mouse->getMouseState();
+    mouseState.width = width;
+    mouseState.height = height;
+    }*/
+
+void MyFrameListener::mouseMoved(const OIS::MouseEvent &e){
+    Ogre::OverlayElement *oe;
+    oe = _overlayManager->getOverlayElement("cursor");
+    oe->setLeft(e.state.X.abs);  oe->setTop(e.state.Y.abs);
 }

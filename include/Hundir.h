@@ -24,7 +24,7 @@ public:
   void generarPlayers();
   void simular();
   Celda* selCelda(int nplayer, Celda *anterior);
-  
+ 
   /*Tablero generarTablero(int dim);
   PlayerIA* getPlayer1();
   PlayerIA* getPlayer2();
