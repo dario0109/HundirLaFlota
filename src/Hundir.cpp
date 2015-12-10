@@ -44,13 +44,14 @@ int Hundir::start() {
   
   loadResources();
   createScene();
+  simular();
+  
 
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
   _root->startRendering();
 
-  simular();
-  
+
   return 0;
 }
 
@@ -98,7 +99,6 @@ void Hundir::createScene() {
             sncasilla << "C" << f << "_"<< c;
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
-
              /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
             ent->setQueryFlags(CUBE1);
@@ -108,6 +108,7 @@ void Hundir::createScene() {
 	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 	      snbarco1 << "B1(" << f << "," << c << ")";
 	      nodo_bar = ntablero->createChildSceneNode(snbarco1.str(), Ogre::Vector3(x, 1,-z));
+          std::cout << snbarco1.str() + "\n" << std::endl;
 	      entbar = _sceneManager->createEntity("Barco.mesh");
 	      entbar->setQueryFlags(CUBE1);
 	      entbar->setVisible(true);
@@ -121,10 +122,10 @@ void Hundir::createScene() {
 	      entbar->setVisible(true);/*cambiar a false*/
 	      nodo_bar->attachObject(entbar);
 	    }
-            x += tam_celda; sncasilla.str(""); sentity.str("");
-        }//Fin for
+            x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 
+      }//Fin for
         x = ini_x;
-        z += tam_celda;  
+        z += tam_celda;
     }//Fin for
 
     /* Sombras */
@@ -181,6 +182,7 @@ void Hundir::generarPlayers(){
   _p2->printState();
 }
 void Hundir::simular(){
+  std::stringstream snbarco1, snbarco2;
   int acierto = -1;
   Celda* aux1,* aux11,* aux2,* aux22;
   
@@ -205,10 +207,16 @@ void Hundir::simular(){
     }while(acierto<0);
     std::cout << " en la posicion (" << aux1->getX()+1 << ","<< aux1->getY()+1 <<")"<<'\n';
     if(acierto>0){
-      _p2->setVida(_p2->getVida()-1);
-      if(acierto<2){
-	aux11 = aux1;
-	_p1->pushTocado(aux1);
+        _p2->setVida(_p2->getVida()-1);
+        snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
+        Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
+        Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
+        pieza->setMaterialName("Tocado");
+        snbarco2.str("");
+    if(acierto<2){
+        aux11 = aux1;
+	    _p1->pushTocado(aux1);
+        
       }
       else{aux11->setX(-1);}
     }
@@ -229,10 +237,16 @@ void Hundir::simular(){
     }while(acierto<0);
     std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
     if(acierto>0){
-      _p1->setVida(_p1->getVida()-1);
+        _p1->setVida(_p1->getVida()-1);
+        snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
+        Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco1.str());
+        Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
+        pieza->setMaterialName("Tocado");
+        snbarco1.str("");
       if(acierto<2){
-	aux22 = aux2;
-	_p2->pushTocado(aux2);
+	   aux22 = aux2;
+	   _p2->pushTocado(aux2);
+        
       }
       else{aux22->setX(-1);}
     }
