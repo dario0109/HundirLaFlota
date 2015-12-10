@@ -151,14 +151,6 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   } 
   return true;
 }
-
-
-/*void MyFrameListener::setWindowExtents(int width, int height){
-    const OIS::MouseState &mouseState = _mouse->getMouseState();
-    mouseState.width = width;
-    mouseState.height = height;
-    }*/
-
 void MyFrameListener::mouseMoved(const OIS::MouseEvent &e){
     Ogre::OverlayElement *oe;
     oe = _overlayManager->getOverlayElement("cursor");

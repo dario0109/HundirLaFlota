@@ -45,12 +45,12 @@ int Hundir::start() {
   loadResources();
   createScene();
 
-  simular();
-  std::cout << "Antes MyFrameListener" << std::endl;
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
-  std::cout << "Añadido" << std::endl;
   _root->startRendering();
+
+  simular();
+  
   return 0;
 }
 
@@ -77,7 +77,7 @@ void Hundir::loadResources() {
 void Hundir::createScene() {
   double ini_x, x, z, tam_celda;
   int n_celdas;
-  std::stringstream sncasilla, snbarco, sentity;
+  std::stringstream sncasilla, snbarco1, snbarco2, sentity;
 
    /* Nodo base */
   Ogre::Entity *ent = NULL, *entbar = NULL;
@@ -98,9 +98,7 @@ void Hundir::createScene() {
             sncasilla << "C" << f << "_"<< c;
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
-	    /****************/
-	    
-	    /****************/
+
              /* Para ese nodo creamos visualizacion estandar */ 
             ent = _sceneManager->createEntity("Casilla.mesh");
             ent->setQueryFlags(CUBE1);
@@ -108,22 +106,21 @@ void Hundir::createScene() {
             nodo_cel->attachObject(ent);
 
 	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
-	      snbarco << "B" << f << "_" << c;
-	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1,-z));
+	      snbarco1 << "B1(" << f << "," << c << ")";
+	      nodo_bar = ntablero->createChildSceneNode(snbarco1.str(), Ogre::Vector3(x, 1,-z));
 	      entbar = _sceneManager->createEntity("Barco.mesh");
 	      entbar->setQueryFlags(CUBE1);
 	      entbar->setVisible(true);
 	      nodo_bar->attachObject(entbar);
-	      }
+	    }
 	    if(_p2->getTablero()->getCelda(f,c)->getEstado()>0){
-	      snbarco << "B" << f << "_" << c;
-	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, z));
+	      snbarco2 << "B2(" << f << "," << c << ")";
+	      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 	      entbar = _sceneManager->createEntity("Barco.mesh");
 	      entbar->setQueryFlags(CUBE1);
-	      entbar->setVisible(false);
+	      entbar->setVisible(true);/*cambiar a false*/
 	      nodo_bar->attachObject(entbar);
 	    }
-           
             x += tam_celda; sncasilla.str(""); sentity.str("");
         }//Fin for
         x = ini_x;
@@ -186,6 +183,7 @@ void Hundir::generarPlayers(){
 void Hundir::simular(){
   int acierto = -1;
   Celda* aux1,* aux11,* aux2,* aux22;
+  
   aux11 = new Celda();
   aux22 = new Celda();
   int i = 0;
@@ -199,6 +197,7 @@ void Hundir::simular(){
     j = 0;
     if(aux11->getX()<0 && _p1->getTocados().size() > 0){aux11 = _p1->popTocado();}
     do{
+      //while(!_framelistener->_mouse->getMouseState().buttonDown(OIS::MB_Left));
       aux1 = selCelda(1, aux11);
       acierto = (_p2->getTablero())->onClick(aux1);
       if(j>16){aux11->setX(-1);}//chapuza aqui
@@ -217,6 +216,7 @@ void Hundir::simular(){
       std::cout << "Gana el jugador 1!" << '\n';
       break;
     }
+    
     std::cout << "Jugador 2 ataca y... ";
     j=0;
 

@@ -15,7 +15,6 @@ class MyFrameListener : public FrameListener {
 private:
   OIS::InputManager* _inputManager;
   OIS::Keyboard* _keyboard;
-  OIS::Mouse* _mouse;
   Camera* _camera;
   RenderWindow* _win;
   OverlayManager* _overlayManager;
@@ -29,8 +28,12 @@ private:
   
   void mouseMoved(const OIS::MouseEvent &e);
 
+  
 public:
   MyFrameListener(RenderWindow* win, Camera* cam, SceneManager* sm);
   ~MyFrameListener();
-  bool frameStarted(const FrameEvent& evt);  
+  bool frameStarted(const FrameEvent& evt);
+
+  
+  OIS::Mouse* _mouse;
 };
