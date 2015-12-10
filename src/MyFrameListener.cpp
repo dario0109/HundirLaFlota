@@ -24,6 +24,8 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
   _win->getCustomAttribute("WINDOW", &windowHandle);
   wHandleStr << windowHandle;
   param.insert(make_pair("WINDOW", wHandleStr.str()));
+  param.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+  param.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
   
   _inputManager = OIS::InputManager::createInputSystem(param);
   _keyboard = static_cast<OIS::Keyboard*>
@@ -132,7 +134,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     it = result.begin();
     
     std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
-    
+
  /*  if (it != result.end()) {
       if (mbleft) {
 	if (it->movable->getParentSceneNode()->getName() == "Col_Suelo") {
