@@ -40,15 +40,16 @@ int Hundir::start() {
   double height = viewport->getActualHeight();
   cam->setAspectRatio(width / height);
 
-  generarPlayers();
+  //generarPlayers();
   
   loadResources();
   createScene();
 
-  simular();
-
+  //simular();
+  std::cout << "Antes MyFrameListener" << std::endl;
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
+  std::cout << "Añadido" << std::endl;
   _root->startRendering();
   return 0;
 }
