@@ -99,10 +99,10 @@ void Hundir::createScene() {
             /* Creamos el nodo para una determinada celda */
             nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
 	    /****************/
-	    if(_p1->getTablero()->getCelda(f,c)>0){
+	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 	      snbarco << "B" << f << "_" << c;
-	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, z+2));
-	      entbar = _sceneManager->createEntity("Casilla.mesh");
+	      nodo_bar = ntablero->createChildSceneNode(snbarco.str(), Ogre::Vector3(x, 1, -z));
+	      entbar = _sceneManager->createEntity("Barco.mesh");
 	      entbar->setQueryFlags(CUBE1);
 	      entbar->setVisible(true);
 	      nodo_bar->attachObject(entbar);
