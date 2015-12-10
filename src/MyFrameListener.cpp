@@ -40,22 +40,7 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
 
 }
 
-MyFrameListener::~MyFrameListener() {
-/*  if(_inputManager) {
-        if(_keyboard) {
-            _inputManager->destroyInputObject(_keyboard);
-            _keyboard = 0;
-        }//Fin if
-        if(_mouse) {
-            _inputManager->destroyInputObject(_mouse);
-            _mouse = 0;
-        }//Fin if
-        OIS::InputManager::destroyInputSystem(_inputManager);
-        _inputManager = 0;
-        _keyListeners.clear();
-	  _mouseListeners.clear();
-  }*/
-	
+MyFrameListener::~MyFrameListener() {	
   _inputManager->destroyInputObject(_keyboard);
   _inputManager->destroyInputObject(_mouse);
   _sceneManager->destroyQuery(_raySceneQuery);
@@ -118,10 +103,9 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     _camera->pitch(Radian(roty));
     cout << "Boton Medio" << endl;
   }
-  
   if (mbleft) {  // Boton izquierdo o derecho -------------
   	uint32 mask;
-    cout << "Boton Izquierdo" << endl;
+	//cout << "Boton Izquierdo" << endl;
     mask = CUBE1;  // Podemos elegir todo
 
     Ogre::Ray r = setRayQuery(posx, posy, mask);
@@ -131,7 +115,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     
     std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
 
- /*  if (it != result.end()) {
+   if (it != result.end()) {
       if (mbleft) {
 	if (it->movable->getParentSceneNode()->getName() == "Col_Suelo") {
 	  SceneNode *nodeaux = _sceneManager->createSceneNode();
@@ -147,7 +131,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       _selectedNode = it->movable->getParentSceneNode();
       _selectedNode->showBoundingBox(true);
     }
-*/
+
   } 
   return true;
 }

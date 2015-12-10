@@ -19,10 +19,8 @@ private:
   RenderWindow* _win;
   OverlayManager* _overlayManager;
   SceneManager* _sceneManager;
-  RaySceneQuery *_raySceneQuery;
   SceneNode *_selectedNode;
 
-  Ray setRayQuery(int posx, int posy, uint32 mask);
 
   void setWindowExtents(int width, int height);
   
@@ -33,7 +31,8 @@ public:
   MyFrameListener(RenderWindow* win, Camera* cam, SceneManager* sm);
   ~MyFrameListener();
   bool frameStarted(const FrameEvent& evt);
+  Ray setRayQuery(int posx, int posy, uint32 mask);
 
-  
   OIS::Mouse* _mouse;
+  RaySceneQuery *_raySceneQuery;
 };

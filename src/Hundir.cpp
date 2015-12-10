@@ -10,6 +10,7 @@ using namespace std;
 Hundir::Hundir() {
   _sceneManager = NULL;
   _framelistener = NULL;
+  _endGame = false;
 }
 
 Hundir::~Hundir() {
@@ -44,14 +45,11 @@ int Hundir::start() {
   
   loadResources();
   createScene();
-  simular();
-  
-
   _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
+  simular();
   _root->startRendering();
-
-
+  
   return 0;
 }
 
@@ -105,6 +103,9 @@ void Hundir::createScene() {
             ent->setQueryFlags(CUBE1);
             ent->setVisible(false);
             nodo_cel->attachObject(ent);
+	    _p1->getTablero()->getCelda(f,c)->setNodo(nodo_cel);//****//
+	    
+	    if(_p1->getTablero()->getCelda(f,c)->getNodo()!=NULL){std::cout << "Nodo enlazado";}
 
 	    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 	      snbarco1 << "B1(" << f << "," << c << ")";
@@ -120,7 +121,7 @@ void Hundir::createScene() {
 	      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 	      entbar = _sceneManager->createEntity("Barco.mesh");
 	      entbar->setQueryFlags(STAGE);
-	      entbar->setVisible(true);/*cambiar a false*/
+	      entbar->setVisible(false);/*cambiar a false*/
 	      nodo_bar->attachObject(entbar);
 	    }
             x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 
@@ -172,9 +173,6 @@ void Hundir::generarPlayers(){
   _p1 = new PlayerIA();
   _p1->crearPlayer("IA Player 1", t1, barcos1);
   _p1->printState();
-
-  
-  
   std::vector <Barco*> barcos2 = generarBarcos();
   Tablero* t2 = new Tablero();
   t2->crearTablero(8, barcos2);
@@ -203,6 +201,7 @@ void Hundir::simular(){
     do{
       //while(!_framelistener->_mouse->getMouseState().buttonDown(OIS::MB_Left));
       aux1 = selCelda(1, aux11);
+      //if(aux1->getNodo()==NULL){std::cout << "Nodo enlazado";}
       acierto = (_p2->getTablero())->onClick(aux1);
       if(j>16){aux11->setX(-1);}//chapuza aqui
       j++;
@@ -215,11 +214,10 @@ void Hundir::simular(){
         Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
         pieza->setMaterialName("Tocado");
         snbarco2.str("");
-    if(acierto<2){
-        aux11 = aux1;
-	    _p1->pushTocado(aux1);
-        
-      }
+	if(acierto<2){
+	  aux11 = aux1;
+	  _p1->pushTocado(aux1);
+	}
       else{aux11->setX(-1);}
     }
     if(_p2->getVida()<1){
@@ -245,18 +243,21 @@ void Hundir::simular(){
             Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
             pieza->setMaterialName("Tocado");
             snbarco1.str("");
-          if(acierto<2){
-    	   aux22 = aux2;
-    	   _p2->pushTocado(aux2);
-            
-          }
+	    if(acierto<2){
+	      aux22 = aux2;
+	      _p2->pushTocado(aux2);
+	    }
           else{aux22->setX(-1);}
         }
+	else{
+	  
+	}
         if(_p1->getVida()<1){
           std::cout << "Gana el jugador 2!" << '\n';
           break;
         }
     }
+    usleep(100000);
   }
 }
 Celda* Hundir::selCelda(int nplayer, Celda *anterior){
