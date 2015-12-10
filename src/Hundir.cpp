@@ -185,6 +185,7 @@ void Hundir::simular(){
   std::stringstream snbarco1, snbarco2;
   int acierto = -1;
   Celda* aux1,* aux11,* aux2,* aux22;
+  bool turno = true;
   
   aux11 = new Celda();
   aux22 = new Celda();
@@ -224,35 +225,36 @@ void Hundir::simular(){
       std::cout << "Gana el jugador 1!" << '\n';
       break;
     }
-    
-    std::cout << "Jugador 2 ataca y... ";
-    j=0;
+    if (turno){
+        std::cout << "Jugador 2 ataca y... ";
+        j=0;
 
-    if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
-    do{
-      aux2 = selCelda(2, aux22);
-      acierto = _p1->getTablero()->onClick(aux2);
-      if(j>16){aux22->setX(-1);}//chapuza aqui
-      j++;
-    }while(acierto<0);
-    std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
-    if(acierto>0){
-        _p1->setVida(_p1->getVida()-1);
-        snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
-        Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco1.str());
-        Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
-        pieza->setMaterialName("Tocado");
-        snbarco1.str("");
-      if(acierto<2){
-	   aux22 = aux2;
-	   _p2->pushTocado(aux2);
-        
-      }
-      else{aux22->setX(-1);}
-    }
-    if(_p1->getVida()<1){
-      std::cout << "Gana el jugador 2!" << '\n';
-      break;
+        if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
+        do{
+            aux2 = selCelda(2, aux22);
+            acierto = _p1->getTablero()->onClick(aux2);
+            if(j>16){aux22->setX(-1);}//chapuza aqui
+            j++;
+        }while(acierto<0);
+        std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
+        if(acierto>0){
+            _p1->setVida(_p1->getVida()-1);
+            snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
+            Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco1.str());
+            Entity* pieza = static_cast<Entity*>(casilla->getAttachedObject(0));
+            pieza->setMaterialName("Tocado");
+            snbarco1.str("");
+          if(acierto<2){
+    	   aux22 = aux2;
+    	   _p2->pushTocado(aux2);
+            
+          }
+          else{aux22->setX(-1);}
+        }
+        if(_p1->getVida()<1){
+          std::cout << "Gana el jugador 2!" << '\n';
+          break;
+        }
     }
   }
 }
