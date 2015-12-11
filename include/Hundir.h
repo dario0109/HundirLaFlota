@@ -10,9 +10,7 @@ private:
   Ogre::SceneManager* _sceneManager;
   Ogre::Root* _root;
   MyFrameListener* _framelistener;
-  Ogre::OverlayManager* _overlayManager;
-  PlayerIA* _p1;
-  PlayerIA* _p2;
+  Juego* _juego;
   
 public:
   Hundir();
@@ -20,13 +18,7 @@ public:
   int start();
   void loadResources();
   void createScene();
-  std::vector<Barco*> generarBarcos();
-  void generarPlayers();
-  void simular();
-  Celda* selCelda(int nplayer, Celda *anterior);
-
   
-  bool _endGame;
   /*Tablero generarTablero(int dim);
   PlayerIA* getPlayer1();
   PlayerIA* getPlayer2();

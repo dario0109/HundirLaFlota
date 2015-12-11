@@ -14,11 +14,14 @@
  *********************************************************************/
 #include "MyFrameListener.h"
 
-MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm){
+MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm, Juego* juego){
+
   OIS::ParamList param; size_t windowHandle;  ostringstream wHandleStr;
 
   _camera = cam;
   _sceneManager = sm; _win = win;
+  _juego = juego;
+  
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
   _win->getCustomAttribute("WINDOW", &windowHandle);
@@ -34,6 +37,8 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
     (_inputManager->createInputObject(OIS::OISMouse, false));
   _mouse->getMouseState().width = _win->getWidth();
   _mouse->getMouseState().height = _win->getHeight();
+
+  _mouse->capture();
 
   _raySceneQuery = _sceneManager->createRayQuery(Ray());
   //_selectedNode = NULL;
@@ -60,12 +65,12 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   Vector3 vt(0,0,0);     Real tSpeed = 10.0;  
   Real deltaT = evt.timeSinceLastFrame;
 
-  bool mbleft, mbmiddle, mbright; // Botones del raton pulsados
+  bool mbleft, mbmiddle; // Botones del raton pulsados
 
   _keyboard->capture();  _mouse->capture();   // Captura eventos
 
-  int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
-  int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
+ int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
+ int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
 
   if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;   // Exit!
 /*
@@ -87,16 +92,15 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   }
 */
   // Si usamos la rueda, desplazamos en Z la camara ------------------
-  vt+= Vector3(0,0,-10)*deltaT * _mouse->getMouseState().Z.rel;   
+ vt+= Vector3(0,0,-10)*deltaT * _mouse->getMouseState().Z.rel;   
   _camera->moveRelative(vt * deltaT * tSpeed);
 
   // Botones del raton pulsados? -------------------------------------
   mbleft = _mouse->getMouseState().buttonDown(OIS::MB_Left);
   mbmiddle = _mouse->getMouseState().buttonDown(OIS::MB_Middle);
-  mbright = _mouse->getMouseState().buttonDown(OIS::MB_Right);
 
   
-  if (mbmiddle) { // Con boton medio pulsado, rotamos camara ---------
+ if (mbmiddle) { // Con boton medio pulsado, rotamos camara ---------
     float rotx = _mouse->getMouseState().X.rel * deltaT * -1;
     float roty = _mouse->getMouseState().Y.rel * deltaT * -1;
     _camera->yaw(Radian(rotx));
@@ -114,8 +118,9 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     it = result.begin();
     
     std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
-
-   if (it != result.end()) {
+    _juego->simular();
+  }
+/*   if (it != result.end()) {
       if (mbleft) {
 	if (it->movable->getParentSceneNode()->getName() == "Col_Suelo") {
 	  SceneNode *nodeaux = _sceneManager->createSceneNode();
@@ -132,11 +137,6 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       _selectedNode->showBoundingBox(true);
     }
 
-  } 
+  }*/
   return true;
-}
-void MyFrameListener::mouseMoved(const OIS::MouseEvent &e){
-    Ogre::OverlayElement *oe;
-    oe = _overlayManager->getOverlayElement("cursor");
-    oe->setLeft(e.state.X.abs);  oe->setTop(e.state.Y.abs);
 }

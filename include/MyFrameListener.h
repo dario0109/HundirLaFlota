@@ -1,8 +1,6 @@
 #include <Ogre.h>
-#include <OgreOverlaySystem.h>
-#include <OgreOverlayElement.h>
-#include <OgreOverlayManager.h>
 #include <OIS/OIS.h>
+#include <Juego.h>
 
 #define STAGE 1 << 0  // Mascara para el escenario
 #define CUBE1 1 << 1  // Mascara para objetos de tipo 1
@@ -11,28 +9,24 @@
 using namespace Ogre;
 using namespace std;
 
-class MyFrameListener : public FrameListener {
+class MyFrameListener : public FrameListener{
 private:
   OIS::InputManager* _inputManager;
   OIS::Keyboard* _keyboard;
+  OIS::Mouse* _mouse;
   Camera* _camera;
   RenderWindow* _win;
-  OverlayManager* _overlayManager;
+  //OverlayManager* _overlayManager;
   SceneManager* _sceneManager;
+  RaySceneQuery *_raySceneQuery;
   SceneNode *_selectedNode;
+  Juego* _juego;
 
-
-  void setWindowExtents(int width, int height);
-  
-  void mouseMoved(const OIS::MouseEvent &e);
-
-  
-public:
-  MyFrameListener(RenderWindow* win, Camera* cam, SceneManager* sm);
-  ~MyFrameListener();
-  bool frameStarted(const FrameEvent& evt);
   Ray setRayQuery(int posx, int posy, uint32 mask);
 
-  OIS::Mouse* _mouse;
-  RaySceneQuery *_raySceneQuery;
+public:
+  MyFrameListener(RenderWindow* win, Camera* cam, 
+      SceneManager* sm, Juego* juego);
+  ~MyFrameListener();
+  bool frameStarted(const FrameEvent& evt);  
 };
