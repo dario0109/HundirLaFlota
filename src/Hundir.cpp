@@ -72,7 +72,7 @@ void Hundir::createScene() {
 
   Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
   Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
-  //tablero->setQueryFlags(STAGE);
+  tablero->setQueryFlags(STAGE);
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
     /* Sombras */

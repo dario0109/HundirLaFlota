@@ -108,18 +108,27 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   }
   if (mbleft) {
     uint32 mask;
-    mask = CUBE1;  // Podemos elegir todo
+    mask = CUBE1 | STAGE;  // Podemos elegir todo
     Ogre::Ray r = setRayQuery(posx, posy, mask);
     Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
     Ogre::RaySceneQueryResult::iterator it;
-    it = result.begin();
-    if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[1]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[1]-48<8 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8){
-      _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[1]-48, (int)it->movable->getParentSceneNode()->getName()[3]-48);//tabla ascii
-    }
-    else if(_turno == 2){
-      std::cout << "FIN DEL JUEGO!" << '\n';
-      return false;
+    if(result.begin()!=result.end()){
+      it = result.begin();
+      Ogre::SceneNode* nodo = it->movable->getParentSceneNode();
+      Ogre::MovableObject* clickado = nodo->getAttachedObject(0);
+      std::cout << clickado->getQueryFlags() << std::endl;
+      if(clickado->getQueryFlags()==CUBE1){
+        std::cout << "casilla" << std::endl;
+         std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
+        if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8 && (int)it->movable->getParentSceneNode()->getName()[5]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[5]-48<8){
+          _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[3]-48, (int)it->movable->getParentSceneNode()->getName()[5 ]-48);//tabla ascii
+        }else if(_turno == 2){
+          std::cout << "FIN DEL JUEGO!" << '\n';
+          return false;
+        } 
+      }
     }
   }
   return true;
 }
+;

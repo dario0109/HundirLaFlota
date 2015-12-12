@@ -55,6 +55,7 @@ int Juego::simular(int x, int y){
     snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
     Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
+    std::cout << "Cambiando color" << std::endl;
     pieza->setMaterialName("Tocado");
     pieza->setVisible(true);
     snbarco2.str("");
@@ -63,7 +64,7 @@ int Juego::simular(int x, int y){
     turno = 0;
   }
   else{//agua
-    sncelda1 << "C" << aux1->getX() << "_" << aux1->getY();
+    sncelda1 << "C1(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
     pieza2->setMaterialName("Rojo");
@@ -150,7 +151,7 @@ void Juego::colocarBarcos(){
 	    for(int f = 0; f < n_celdas; f++){
 	        for(int c = 0; c < n_celdas; c++){
 	            /* Nombre del nodo para esa celda */
-	            sncasilla << "C" << f << "_"<< c;
+	            sncasilla << "C1(" << f << ","<< c << ")";
 	            /* Creamos el nodo para una determinada celda */
 	            nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, z));
 	             /* Para ese nodo creamos visualizacion estandar */ 
@@ -173,8 +174,8 @@ void Juego::colocarBarcos(){
 		      snbarco2 << "B2(" << f << "," << c << ")";
 		      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 		      entbar = _sceneManager->createEntity("Barco.mesh");
-		      entbar->setQueryFlags(STAGE);
-		      entbar->setVisible(false);/*cambiar a false*/
+		      entbar->setQueryFlags(CUBE1);
+		      //entbar->setVisible(false);/*cambiar a false*/
 		      nodo_bar->attachObject(entbar);
 		    }
 	            x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 
