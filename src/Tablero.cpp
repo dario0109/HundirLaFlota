@@ -10,14 +10,12 @@ void Tablero::crearTablero(int dim, std::vector<Barco*> barcos){
   _dim = dim;
   _tab = new Celda*[_dim];
   _barcos = barcos;
-  //_rest = new vector <Celda*>();
   for(int x = 0; x < _dim; x++){
     _tab[x] = new Celda[_dim];
     for(int y = 0; y < _dim; y++){
       _tab[x][y].setX(x);
       _tab[x][y].setY(y);
       _tab[x][y].setEstado(0);
-      //_rest->push_back(&_tab[x][y]);
     }
   }
   rellenar();
@@ -25,7 +23,6 @@ void Tablero::crearTablero(int dim, std::vector<Barco*> barcos){
 
 void Tablero::limpiarTablero(){
   _barcos.clear();
-  /*Aqui habia un swap que no se lo que hacia*/
   for (int i = 0; i < _dim; i++){
     delete [] _tab[i];
   }
@@ -112,6 +109,3 @@ void Tablero::printTablero(){
   }
   std::cout << '\n';
 }
-//std::vector<Celda*>* Tablero::getRest(){return _rest;}
-//void Tablero::setRest(std::vector <Celda*> *rest){_rest = rest;}
-//Celda** Tablero::getTablero(){return _tab;}

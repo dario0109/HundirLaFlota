@@ -21,6 +21,7 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
   _camera = cam;
   _sceneManager = sm; _win = win;
   _juego = juego;
+  _turno = true;
   
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
@@ -111,14 +112,14 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   	uint32 mask;
 	//cout << "Boton Izquierdo" << endl;
     mask = CUBE1;  // Podemos elegir todo
-
     Ogre::Ray r = setRayQuery(posx, posy, mask);
     Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
     Ogre::RaySceneQueryResult::iterator it;
     it = result.begin();
-    
-    std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
-    _juego->simular();
+    //std::cout << "(" << it->movable->getParentSceneNode()->getName()[1] << "," << it->movable->getParentSceneNode()->getName()[3] << ")" << '\n' << std::endl;
+    if(_turno && (int)it->movable->getParentSceneNode()->getName()[1]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[1]-48<8 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8){
+      _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[1]-48, (int)it->movable->getParentSceneNode()->getName()[3]-48);//tabla ascii
+    }
   }
 /*   if (it != result.end()) {
       if (mbleft) {

@@ -39,86 +39,69 @@ void Juego::generarPlayers(){
   _p2->crearPlayer("IA Player 2", t2, barcos2);
   _p2->printState();
 }
-void Juego::simular(){
-	std::cout << "Hello" << std::endl;
-  /*std::stringstream snbarco1, snbarco2;
+bool Juego::simular(int x, int y){
+  std::stringstream snbarco1, snbarco2;
   int acierto = -1;
-  Celda* aux1,* aux11,* aux2,* aux22;
-  bool turno = true;
+  Celda* aux1,* aux2,* aux22;
+  bool turno = false;
   
-  aux11 = new Celda();
   aux22 = new Celda();
   int i = 0;
-  int j = 0;
-  while(true){
-    i++;
-    std::cout << "Turno " << i << '\n';
-    std::cout << "Vida J1 = " << _p1->getVida() << '\n';
-    std::cout << "Vida J2 = " << _p2->getVida() << '\n';
-    std::cout << "Jugador 1 ataca y... ";
-    j = 0;
-    if(aux11->getX()<0 && _p1->getTocados().size() > 0){aux11 = _p1->popTocado();}
+  int j = 0;    i++;
+  /*std::cout << "Turno " << i << '\n';
+  std::cout << "Vida J1 = " << _p1->getVida() << '\n';
+  std::cout << "Vida J2 = " << _p2->getVida() << '\n';*/
+  std::cout << "Jugador 1 ataca en  (" << x+1 << "," << y+1 << ")" << '\n';
+  aux1 = _p2->getTablero()->getCelda(x,y);
+  acierto = (_p2->getTablero())->onClick(aux1);
+  if(acierto>0){
+    _p2->setVida(_p2->getVida()-1);
+    snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
+    Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
+    Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
+    pieza->setMaterialName("Tocado");
+    pieza->setVisible(true);
+    snbarco2.str("");
+  }
+  else if(acierto < 0){//casilla ya pulsada
+    turno = true;
+  }
+  if(_p2->getVida()<1){
+    std::cout << "Gana el jugador 1!" << '\n';
+    turno = false;
+  }
+  if (!turno){
+    usleep(1000000);
+    std::cout << "Jugador 2 ataca y... ";
+    j=0;
+    
+    if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
     do{
-      //while(!_framelistener->_mouse->getMouseState().buttonDown(OIS::MB_Left));
-      aux1 = selCelda(1, aux11);
-      //if(aux1->getNodo()==NULL){std::cout << "Nodo enlazado";}
-      acierto = (_p2->getTablero())->onClick(aux1);
-      if(j>16){aux11->setX(-1);}//chapuza aqui
+      aux2 = selCelda(2, aux22);
+      acierto = _p1->getTablero()->onClick(aux2);
+      if(j>16){aux22->setX(-1);}//chapuza aqui
       j++;
-    }while(acierto<0);
-    std::cout << " en la posicion (" << aux1->getX()+1 << ","<< aux1->getY()+1 <<")"<<'\n';
+      }while(acierto<0);
+    std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
     if(acierto>0){
-        _p2->setVida(_p2->getVida()-1);
-        snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
-        Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
-        Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-        pieza->setMaterialName("Tocado");
-        snbarco2.str("");
-	if(acierto<2){
-	  aux11 = aux1;
-	  _p1->pushTocado(aux1);
-	}
-      else{aux11->setX(-1);}
+      _p1->setVida(_p1->getVida()-1);
+      snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
+      Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco1.str());
+      Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
+      pieza->setMaterialName("Tocado");
+      snbarco1.str("");
+      if(acierto<2){
+	aux22 = aux2;
+	_p2->pushTocado(aux2);
+      }
+      else{aux22->setX(-1);}
     }
-    if(_p2->getVida()<1){
-      std::cout << "Gana el jugador 1!" << '\n';
-      break;
+    if(_p1->getVida()<1){
+      std::cout << "Gana el jugador 2!" << '\n';
     }
-    if (turno){
-        std::cout << "Jugador 2 ataca y... ";
-        j=0;
-
-        if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
-        do{
-            aux2 = selCelda(2, aux22);
-            acierto = _p1->getTablero()->onClick(aux2);
-            if(j>16){aux22->setX(-1);}//chapuza aqui
-            j++;
-        }while(acierto<0);
-        std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
-        if(acierto>0){
-            _p1->setVida(_p1->getVida()-1);
-            snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
-            Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco1.str());
-            Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-            pieza->setMaterialName("Tocado");
-            snbarco1.str("");
-	    if(acierto<2){
-	      aux22 = aux2;
-	      _p2->pushTocado(aux2);
-	    }
-          else{aux22->setX(-1);}
-        }
-	else{
-	  
-	}
-        if(_p1->getVida()<1){
-          std::cout << "Gana el jugador 2!" << '\n';
-          break;
-        }
-    }
-    //usleep(100000);
-  }*/
+    turno = true;
+  }
+  return turno;
 }
 Celda* Juego::selCelda(int nplayer, Celda *anterior){
   Celda* aux;
