@@ -69,7 +69,7 @@ int Juego::simular(int x, int y){
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
     pieza2->setMaterialName("Rojo");
     pieza2->setVisible(true);
-    snbarco2.str("");
+    sncelda1.str("");
   }
   if(_p2->getVida()<1){
     turno = 2;
@@ -84,7 +84,7 @@ int Juego::simular(int x, int y){
       acierto = _p1->getTablero()->onClick(aux2);
       if(j>16){aux22->setX(-1);}
       j++;
-      }while(acierto<0);
+    }while(acierto<0);
     if(acierto>0){
       _p1->setVida(_p1->getVida()-1);
       snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
@@ -93,10 +93,19 @@ int Juego::simular(int x, int y){
       pieza->setMaterialName("Tocado");
       snbarco1.str("");
       if(acierto<2){
-	aux22 = aux2;
-	_p2->pushTocado(aux2);
+      	aux22 = aux2;
+      	_p2->pushTocado(aux2);
       }
-      else{aux22->setX(-1);}
+      else{
+        aux22->setX(-1);
+      }
+    }else{
+      sncelda2 << "C2(" << aux2->getX() << "," << aux2->getY() << ")";
+      Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda2.str());
+      Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+      pieza2->setMaterialName("Rojo");
+      pieza2->setVisible(true);
+      sncelda2.str("");
     }
     if(_p1->getVida()<1){turno = 2;}
   }
@@ -159,7 +168,19 @@ void Juego::colocarBarcos(){
 	            ent->setQueryFlags(CUBE1);
 	            ent->setVisible(false);
 	            nodo_cel->attachObject(ent);
-		        _p2->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
+		          _p2->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
+              sncasilla.str("");
+
+               /* Nombre del nodo para esa celda */
+              sncasilla << "C2(" << f << ","<< c << ")";
+              /* Creamos el nodo para una determinada celda */
+              nodo_cel = ntablero->createChildSceneNode(sncasilla.str(), Ogre::Vector3(x, 1, -z));
+               /* Para ese nodo creamos visualizacion estandar */ 
+              ent = _sceneManager->createEntity("Casilla.mesh");
+              ent->setQueryFlags(STAGE);
+              ent->setVisible(false);
+              nodo_cel->attachObject(ent);
+              _p1->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
 
 		    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 		      snbarco1 << "B1(" << f << "," << c << ")";
