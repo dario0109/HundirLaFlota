@@ -40,7 +40,7 @@ void Juego::generarPlayers(){
   _p2->printState();
 }
 bool Juego::simular(int x, int y){
-  std::stringstream snbarco1, snbarco2;
+  std::stringstream snbarco1, snbarco2, sncelda1, sncelda2;
   int acierto = -1;
   Celda* aux1,* aux2,* aux22;
   bool turno = false;
@@ -66,6 +66,14 @@ bool Juego::simular(int x, int y){
   else if(acierto < 0){//casilla ya pulsada
     turno = true;
   }
+  else{//agua
+    sncelda1 << "C" << aux1->getX() << "_" << aux1->getY();
+    Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
+    Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+    pieza2->setMaterialName("Rojo");
+    pieza2->setVisible(true);
+    snbarco2.str("");
+  }
   if(_p2->getVida()<1){
     std::cout << "Gana el jugador 1!" << '\n';
     turno = false;
@@ -79,7 +87,7 @@ bool Juego::simular(int x, int y){
     do{
       aux2 = selCelda(2, aux22);
       acierto = _p1->getTablero()->onClick(aux2);
-      if(j>16){aux22->setX(-1);}//chapuza aqui
+      if(j>16){aux22->setX(-1);}
       j++;
       }while(acierto<0);
     std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
@@ -94,7 +102,8 @@ bool Juego::simular(int x, int y){
 	aux22 = aux2;
 	_p2->pushTocado(aux2);
       }
-      else{aux22->setX(-1);}
+      else{aux22->setX(-1);
+      }
     }
     if(_p1->getVida()<1){
       std::cout << "Gana el jugador 2!" << '\n';
