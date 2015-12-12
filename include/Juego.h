@@ -21,7 +21,7 @@ public:
 
   void colocarBarcos();
   void generarPlayers();
-  bool simular(int x, int y);
+  int simular(int x, int y);
   Celda* selCelda(int nplayer, Celda *anterior);
 
   

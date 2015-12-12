@@ -21,7 +21,7 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
   _camera = cam;
   _sceneManager = sm; _win = win;
   _juego = juego;
-  _turno = true;
+  _turno = 1;
   
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
@@ -70,8 +70,8 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
 
   _keyboard->capture();  _mouse->capture();   // Captura eventos
 
- int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
- int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
+  int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
+  int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
 
   if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;   // Exit!
 /*
@@ -100,44 +100,26 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   mbleft = _mouse->getMouseState().buttonDown(OIS::MB_Left);
   mbmiddle = _mouse->getMouseState().buttonDown(OIS::MB_Middle);
 
-  
- if (mbmiddle) { // Con boton medio pulsado, rotamos camara ---------
+ if (mbmiddle) {
     float rotx = _mouse->getMouseState().X.rel * deltaT * -1;
     float roty = _mouse->getMouseState().Y.rel * deltaT * -1;
     _camera->yaw(Radian(rotx));
     _camera->pitch(Radian(roty));
-    cout << "Boton Medio" << endl;
   }
-  if (mbleft) {  // Boton izquierdo o derecho -------------
-  	uint32 mask;
-	//cout << "Boton Izquierdo" << endl;
+  if (mbleft) {
+    uint32 mask;
     mask = CUBE1;  // Podemos elegir todo
     Ogre::Ray r = setRayQuery(posx, posy, mask);
     Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
     Ogre::RaySceneQueryResult::iterator it;
     it = result.begin();
-    //std::cout << "(" << it->movable->getParentSceneNode()->getName()[1] << "," << it->movable->getParentSceneNode()->getName()[3] << ")" << '\n' << std::endl;
-    if(_turno && (int)it->movable->getParentSceneNode()->getName()[1]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[1]-48<8 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8){
+    if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[1]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[1]-48<8 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8){
       _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[1]-48, (int)it->movable->getParentSceneNode()->getName()[3]-48);//tabla ascii
     }
-  }
-/*   if (it != result.end()) {
-      if (mbleft) {
-	if (it->movable->getParentSceneNode()->getName() == "Col_Suelo") {
-	  SceneNode *nodeaux = _sceneManager->createSceneNode();
-	  int i = rand()%2;   std::stringstream saux;
-	  saux << "Cube" << i+1 << ".mesh";
-	  Entity *entaux = _sceneManager->createEntity(saux.str());
-	  entaux->setQueryFlags(i?CUBE1:CUBE2);
-	  nodeaux->attachObject(entaux);
-	  nodeaux->translate(r.getPoint(it->distance));
-	  _sceneManager->getRootSceneNode()->addChild(nodeaux);
-	}
-      }
-      _selectedNode = it->movable->getParentSceneNode();
-      _selectedNode->showBoundingBox(true);
+    else if(_turno == 2){
+      std::cout << "FIN DEL JUEGO!" << '\n';
+      return false;
     }
-
-  }*/
+  }
   return true;
 }

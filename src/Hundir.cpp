@@ -10,12 +10,10 @@ Hundir::Hundir() {
   _sceneManager = NULL;
   _framelistener = NULL;
 }
-
 Hundir::~Hundir() {
   delete _root;
   delete _framelistener;
 }
-
 int Hundir::start() {
   _root = new Ogre::Root();
   
@@ -23,16 +21,14 @@ int Hundir::start() {
     _root->showConfigDialog();
     _root->saveConfig();
   }
-  
   Ogre::RenderWindow* window = _root->initialise(true,"Hundir Example");
   _sceneManager = _root->createSceneManager(Ogre::ST_GENERIC);
-  
   Ogre::Camera* cam = _sceneManager->createCamera("MainCamera");
   cam->setPosition(Ogre::Vector3(-10,30,35));
   cam->lookAt(Ogre::Vector3(0,0,0));
   cam->setNearClipDistance(5);
   cam->setFarClipDistance(10000);
-
+  
   Ogre::Viewport* viewport = window->addViewport(cam);
   viewport->setBackgroundColour(Ogre::ColourValue(0.0,0.0,0.0));
   double width = viewport->getActualWidth();
@@ -45,18 +41,10 @@ int Hundir::start() {
   _juego = new Juego(_sceneManager);
   _juego->generarPlayers();
   _juego->colocarBarcos(); 
-  //_juego->simular();
-
-  std::cout << "1" << std::endl;
 
   _framelistener = new MyFrameListener(window, cam, _sceneManager, _juego);
-  std::cout << "2" << std::endl;
   _root->addFrameListener(_framelistener);
-  std::cout << "3" << std::endl;
-
-  _root->startRendering();
-  std::cout << "4" << std::endl;
-  
+  _root->startRendering();  
   return 0;
 }
 
@@ -87,16 +75,12 @@ void Hundir::createScene() {
   //tablero->setQueryFlags(STAGE);
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
-
-  
-
     /* Sombras */
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5, 0.5, 0.5) );
     _sceneManager->setAmbientLight(Ogre::ColourValue(0.9, 0.9, 0.9));
     _sceneManager->setShadowTextureCount(2);
     _sceneManager->setShadowTextureSize(512);
-
     /* Iluminacion */
     Ogre::Light *light = _sceneManager->createLight("Light");
     light->setType(Ogre::Light::LT_SPOTLIGHT);

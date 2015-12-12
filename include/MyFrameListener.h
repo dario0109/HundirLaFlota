@@ -24,7 +24,7 @@ private:
 
   Ray setRayQuery(int posx, int posy, uint32 mask);
 
-  bool _turno;
+  int _turno;
 
 public:
   MyFrameListener(RenderWindow* win, Camera* cam, 

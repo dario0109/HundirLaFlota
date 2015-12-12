@@ -11,10 +11,12 @@ DIRHEA := include/
 CXX := g++
 
 # Flags de compilación -----------------------------------------------
-CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE OGRE-Overlay` 
+CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE` $(CEGUI_CFLAGS) `pkg-config --cflags OIS`
+# `pkg-config --cflags OGRE OGRE-Overlay` 
 
 # Flags del linker ---------------------------------------------------
-LDFLAGS := `pkg-config --libs-only-L OGRE` 
+#LDFLAGS := `pkg-config --libs-only-L OGRE` 
+LDFLAGS :=  `pkg-config --libs OGRE` -lOIS -lGL -lstdc++ $(CEGUI_LDFLAGS) -lboost_system
 LDLIBS := `pkg-config --libs-only-l OGRE OGRE-Overlay` -lboost_system -lOIS -lGL -lstdc++
 
 # Modo de compilación (-mode=release -mode=debug) --------------------

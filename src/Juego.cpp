@@ -39,19 +39,15 @@ void Juego::generarPlayers(){
   _p2->crearPlayer("IA Player 2", t2, barcos2);
   _p2->printState();
 }
-bool Juego::simular(int x, int y){
+int Juego::simular(int x, int y){
   std::stringstream snbarco1, snbarco2, sncelda1, sncelda2;
   int acierto = -1;
   Celda* aux1,* aux2,* aux22;
-  bool turno = false;
+  int turno = 1;
   
   aux22 = new Celda();
   int i = 0;
   int j = 0;    i++;
-  /*std::cout << "Turno " << i << '\n';
-  std::cout << "Vida J1 = " << _p1->getVida() << '\n';
-  std::cout << "Vida J2 = " << _p2->getVida() << '\n';*/
-  std::cout << "Jugador 1 ataca en  (" << x+1 << "," << y+1 << ")" << '\n';
   aux1 = _p2->getTablero()->getCelda(x,y);
   acierto = (_p2->getTablero())->onClick(aux1);
   if(acierto>0){
@@ -64,7 +60,7 @@ bool Juego::simular(int x, int y){
     snbarco2.str("");
   }
   else if(acierto < 0){//casilla ya pulsada
-    turno = true;
+    turno = 0;
   }
   else{//agua
     sncelda1 << "C" << aux1->getX() << "_" << aux1->getY();
@@ -75,12 +71,10 @@ bool Juego::simular(int x, int y){
     snbarco2.str("");
   }
   if(_p2->getVida()<1){
-    std::cout << "Gana el jugador 1!" << '\n';
-    turno = false;
+    turno = 2;
   }
-  if (!turno){
+  if (turno==1){
     usleep(1000000);
-    std::cout << "Jugador 2 ataca y... ";
     j=0;
     
     if(aux22->getX()<0 && _p2->getTocados().size() > 0){aux22 = _p2->popTocado();}
@@ -90,7 +84,6 @@ bool Juego::simular(int x, int y){
       if(j>16){aux22->setX(-1);}
       j++;
       }while(acierto<0);
-    std::cout << "en la posicion (" << aux2->getX()+1 << ","<< aux2->getY()+1 <<")"<<'\n';
     if(acierto>0){
       _p1->setVida(_p1->getVida()-1);
       snbarco1 << "B1(" << aux2->getX() << "," << aux2->getY() << ")";
@@ -102,13 +95,9 @@ bool Juego::simular(int x, int y){
 	aux22 = aux2;
 	_p2->pushTocado(aux2);
       }
-      else{aux22->setX(-1);
-      }
+      else{aux22->setX(-1);}
     }
-    if(_p1->getVida()<1){
-      std::cout << "Gana el jugador 2!" << '\n';
-    }
-    turno = true;
+    if(_p1->getVida()<1){turno = 2;}
   }
   return turno;
 }
