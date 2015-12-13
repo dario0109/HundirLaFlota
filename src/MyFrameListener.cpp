@@ -125,19 +125,24 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
            std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
           if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8 && (int)it->movable->getParentSceneNode()->getName()[5]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[5]-48<8){
             _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[3]-48, (int)it->movable->getParentSceneNode()->getName()[5 ]-48);//tabla ascii
-          }else if(_turno == 2){
+          }
+          if(_turno == 2){
             std::cout << "FIN DEL JUEGO!" << '\n';
             _estado = 6;
           } 
         }
       }
     }
-  }else{
-    _juego->reiniciar();
-    _juego->generarPlayers();
-    _juego->colocarBarcos();
-    _estado = 5;
-    std::cout << _estado << std::endl;
+  }
+  if(_estado==6){
+    if(_keyboard->isKeyDown(OIS::KC_RETURN)){
+      _juego->reiniciar();
+      _juego->generarPlayers();
+      _juego->colocarBarcos();
+      _estado = 5;
+      _turno = 1;
+      std::cout << _estado << std::endl;
+    }
   }
   return true;
 }
