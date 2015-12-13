@@ -56,6 +56,7 @@ int Juego::simular(int x, int y){
     Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
     Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
     std::cout << "Cambiando color" << std::endl;
+    pieza->setQueryFlags(STAGE);
     pieza->setMaterialName("Tocado");
     pieza->setVisible(true);
     snbarco2.str("");
@@ -67,6 +68,7 @@ int Juego::simular(int x, int y){
     sncelda1 << "C1(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+    pieza2->setQueryFlags(STAGE);
     pieza2->setMaterialName("Rojo");
     pieza2->setVisible(true);
     sncelda1.str("");
