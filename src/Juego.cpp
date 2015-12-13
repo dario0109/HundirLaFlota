@@ -205,3 +205,19 @@ void Juego::colocarBarcos(){
 	        z += tam_celda;
 	    }//Fin for
 }
+
+void Juego::reiniciar(){
+  _p1->getTablero()->limpiarTablero();
+  _p2->getTablero()->limpiarTablero();
+  Ogre::SceneNode* ntablero = _sceneManager->getSceneNode("ntablero");
+  Ogre::SceneNode::ChildNodeIterator itChild = ntablero->getChildIterator();
+  while ( itChild.hasMoreElements() ){
+      Ogre::SceneNode* childNode = static_cast<Ogre::SceneNode*>(itChild.getNext());
+      Ogre::SceneNode::ObjectIterator itObject = childNode->getAttachedObjectIterator();
+      while ( itObject.hasMoreElements() ){
+        Ogre::MovableObject* object = static_cast<Ogre::MovableObject*>(itObject.getNext());
+        childNode->getCreator()->destroyMovableObject(object);
+      }
+      _sceneManager->destroySceneNode(childNode->getName());  
+  }
+}

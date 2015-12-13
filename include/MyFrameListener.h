@@ -24,6 +24,8 @@ private:
 
   Ray setRayQuery(int posx, int posy, uint32 mask);
 
+  int _estado;
+
   int _turno;
 
 public:
