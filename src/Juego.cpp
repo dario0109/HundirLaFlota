@@ -96,7 +96,7 @@ int Juego::simular(int x, int y){
     do{
       aux2 = selCelda(2, aux22);
       acierto = _p1->getTablero()->onClick(aux2);
-      if(j>16){aux22->setX(-1);}
+      if(j>64){aux22->setX(-1);}
       j++;
     }while(acierto<0);
     if(acierto>0){
@@ -113,7 +113,7 @@ int Juego::simular(int x, int y){
       else{
         aux22->setX(-1);
 	for(unsigned int w = 0; w < (_p1->getBarcos().at(aux2->getEstado()-21))->getPosiciones()->size(); w++){
-	  snbarco2 << "B1(" << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).first << "," << _p1->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).second << ")";
+	  snbarco2 << "B1(" << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).first << "," << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).second << ")";
 	  Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
 	  Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
 	  //std::cout << "Cambiando color" << std::endl;
