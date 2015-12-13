@@ -128,7 +128,8 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
           }else if(_turno == 2){
             std::cout << "FIN DEL JUEGO!" << '\n';
             _estado = 6;
-          } 
+          }
+	  else{_turno = 1;}
         }
       }
     }
