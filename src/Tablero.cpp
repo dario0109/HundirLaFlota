@@ -53,6 +53,7 @@ void Tablero::rellenar(){
 	for(int x = idx; x <idxf+1; x++){
 	  for(int y = idy; y <idyf+1; y++){
 	    _tab[x][y].setEstado(i+1);//ponemos nº del barco
+	    _barcos[i]->addPosicion(x,y);
 	  }
 	}
 	break;

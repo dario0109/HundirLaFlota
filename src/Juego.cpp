@@ -55,11 +55,22 @@ int Juego::simular(int x, int y){
     snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
     Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-    std::cout << "Cambiando color" << std::endl;
-    pieza->setQueryFlags(STAGE);
+    //std::cout << "Cambiando color" << std::endl;
     pieza->setMaterialName("Tocado");
     pieza->setVisible(true);
     snbarco2.str("");
+    if(acierto > 1){
+      //std::cout << "Estado de celda en hundido " << aux1->getEstado() << '\n';
+      for(unsigned int w = 0; w < (_p2->getBarcos().at(aux1->getEstado()-21))->getPosiciones()->size(); w++){
+	snbarco2 << "B2(" << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).first << "," << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).second << ")";
+	Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
+	Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
+	//std::cout << "Cambiando color" << std::endl;
+	pieza->setMaterialName("Hundido");
+	pieza->setVisible(true);
+	snbarco2.str("");
+      }
+    }
   }
   else if(acierto < 0){//casilla ya pulsada
     turno = 0;
@@ -68,7 +79,6 @@ int Juego::simular(int x, int y){
     sncelda1 << "C1(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
-    pieza2->setQueryFlags(STAGE);
     pieza2->setMaterialName("Rojo");
     pieza2->setVisible(true);
     sncelda1.str("");
@@ -100,8 +110,18 @@ int Juego::simular(int x, int y){
       }
       else{
         aux22->setX(-1);
+	for(unsigned int w = 0; w < (_p1->getBarcos().at(aux2->getEstado()-21))->getPosiciones()->size(); w++){
+	  snbarco2 << "B1(" << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).first << "," << _p1->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).second << ")";
+	  Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
+	  Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
+	  //std::cout << "Cambiando color" << std::endl;
+	  pieza->setMaterialName("Hundido");
+	  pieza->setVisible(true);
+	  snbarco2.str("");
+	}
       }
-    }else{
+    }
+    else{
       sncelda2 << "C2(" << aux2->getX() << "," << aux2->getY() << ")";
       Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda2.str());
       Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
@@ -113,6 +133,7 @@ int Juego::simular(int x, int y){
   }
   return turno;
 }
+
 Celda* Juego::selCelda(int nplayer, Celda *anterior){
   Celda* aux;
   int rand = random(), rand2 = random();

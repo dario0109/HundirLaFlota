@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 #include "Celda.h"
 
 using namespace std;
@@ -12,13 +13,13 @@ public:
   Barco(std::string nombre, int vida);
   void setNombre(std::string nombre);
   void setVida(int vida);
-  void addPosicion(Celda* pos);
+  void addPosicion(int x, int y);
   
   std::string getNombre();
   int getVida();
-  std::vector<Celda*> getPosiciones();
+  std::vector<pair<int, int> >* getPosiciones();
 private:
-  std::vector<Celda*> _pos;
+  std::vector<pair<int, int> >* _pos;
   std::string _nombre;
   int _vida;
 };
