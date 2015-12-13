@@ -38,11 +38,7 @@ int Hundir::start() {
   loadResources();
   createScene();
 
-  _juego = new Juego(_sceneManager);
-  _juego->generarPlayers();
-  _juego->colocarBarcos(); 
-
-  _framelistener = new MyFrameListener(window, cam, _sceneManager, _juego);
+  _framelistener = new MyFrameListener(window, cam, _sceneManager);
   _root->addFrameListener(_framelistener);
   _root->startRendering();  
   return 0;
@@ -70,11 +66,15 @@ void Hundir::loadResources() {
 
 void Hundir::createScene() {
 
-  Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
-  Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
-  tablero->setQueryFlags(STAGE);
-  _sceneManager->getRootSceneNode()->addChild(ntablero);
-  ntablero->attachObject(tablero);
+  Ogre::Entity* inicio = _sceneManager->createEntity("Inicio.mesh");
+  Ogre::SceneNode* ninicio = _sceneManager->createSceneNode("ninicio");
+  _sceneManager->getRootSceneNode()->addChild(ninicio);
+  ninicio->attachObject(inicio);
+  ninicio->yaw(Ogre::Degree(-15));
+  ninicio->pitch(Ogre::Degree(45));
+  ninicio->setScale(1.65,1,1.2);
+  ninicio->setPosition(0,0,-2);
+
     /* Sombras */
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5, 0.5, 0.5) );

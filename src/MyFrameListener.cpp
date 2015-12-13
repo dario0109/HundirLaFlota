@@ -14,15 +14,15 @@
  *********************************************************************/
 #include "MyFrameListener.h"
 
-MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm, Juego* juego){
+MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *sm){
 
   OIS::ParamList param; size_t windowHandle;  ostringstream wHandleStr;
 
   _camera = cam;
   _sceneManager = sm; _win = win;
-  _juego = juego;
+  _juego = new Juego(sm);
   _turno = 1;
-  _estado = 5;
+  _estado = 1;
   
   
   srand((unsigned)time(NULL));   // Semilla aleatorios
@@ -74,7 +74,34 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
   int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
 
-  if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;   // Exit!
+   vt+= Vector3(0,0,-10)*deltaT * _mouse->getMouseState().Z.rel;   
+  _camera->moveRelative(vt * deltaT * tSpeed);
+
+  // Botones del raton pulsados? -------------------------------------
+  mbleft = _mouse->getMouseState().buttonDown(OIS::MB_Left);
+  mbmiddle = _mouse->getMouseState().buttonDown(OIS::MB_Middle);
+
+ if (mbmiddle) {
+    float rotx = _mouse->getMouseState().X.rel * deltaT * -1;
+    float roty = _mouse->getMouseState().Y.rel * deltaT * -1;
+    _camera->yaw(Radian(rotx));
+    _camera->pitch(Radian(roty));
+  }
+
+
+  switch(_estado){
+    case 1:
+      if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;
+      if(_keyboard->isKeyDown(OIS::KC_RETURN)){
+        _sceneManager->destroySceneNode("ninicio");
+        _juego->generarTablero();
+        _juego->generarPlayers();
+        _juego->colocarBarcos(); 
+       _estado = 5;
+      }
+    break;
+
+     // Exit!
 /*
   // Operaciones posibles con el nodo seleccionado -------------------
   if (_selectedNode != NULL) {
@@ -94,21 +121,8 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
   }
 */
   // Si usamos la rueda, desplazamos en Z la camara ------------------
- vt+= Vector3(0,0,-10)*deltaT * _mouse->getMouseState().Z.rel;   
-  _camera->moveRelative(vt * deltaT * tSpeed);
 
-  // Botones del raton pulsados? -------------------------------------
-  mbleft = _mouse->getMouseState().buttonDown(OIS::MB_Left);
-  mbmiddle = _mouse->getMouseState().buttonDown(OIS::MB_Middle);
-
- if (mbmiddle) {
-    float rotx = _mouse->getMouseState().X.rel * deltaT * -1;
-    float roty = _mouse->getMouseState().Y.rel * deltaT * -1;
-    _camera->yaw(Radian(rotx));
-    _camera->pitch(Radian(roty));
-  }
-
-  if(_estado==5){
+  case 5:
     if (mbleft) {
       uint32 mask;
       mask = CUBE1 | STAGE;  // Podemos elegir todo
@@ -133,8 +147,8 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
         }
       }
     }
-  }
-  if(_estado==6){
+  break;
+  case 6:
     if(_keyboard->isKeyDown(OIS::KC_RETURN)){
       _juego->reiniciar();
       _juego->generarPlayers();
@@ -143,6 +157,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       _turno = 1;
       std::cout << _estado << std::endl;
     }
-  }
+  break;
+ }
   return true;
 }

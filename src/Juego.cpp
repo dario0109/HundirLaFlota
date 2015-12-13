@@ -39,6 +39,14 @@ void Juego::generarPlayers(){
   _p2->crearPlayer("IA Player 2", t2, barcos2);
   _p2->printState();
 }
+
+void Juego::generarTablero(){
+  Ogre::Entity* tablero = _sceneManager->createEntity("Tablero.mesh");
+  Ogre::SceneNode* ntablero = _sceneManager->createSceneNode("ntablero");
+  tablero->setQueryFlags(STAGE);
+  _sceneManager->getRootSceneNode()->addChild(ntablero);
+  ntablero->attachObject(tablero);
+}
 int Juego::simular(int x, int y){
   std::stringstream snbarco1, snbarco2, sncelda1, sncelda2;
   int acierto = -1;
@@ -246,3 +254,5 @@ void Juego::reiniciar(){
       _sceneManager->destroySceneNode(childNode->getName());  
   }
 }
+
+

@@ -1,6 +1,9 @@
 #include <Ogre.h>
 #include "MyFrameListener.h"
 #include "Tablero.h"
+#include <OgreOverlaySystem.h>
+#include <OgreOverlayElement.h>
+#include <OgreOverlayManager.h>
 #include "Barco.h"
 #include <vector>
 #include "PlayerIA.h"

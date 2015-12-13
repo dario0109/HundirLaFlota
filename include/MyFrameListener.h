@@ -16,7 +16,6 @@ private:
   OIS::Mouse* _mouse;
   Camera* _camera;
   RenderWindow* _win;
-  //OverlayManager* _overlayManager;
   SceneManager* _sceneManager;
   RaySceneQuery *_raySceneQuery;
   SceneNode *_selectedNode;
@@ -30,7 +29,7 @@ private:
 
 public:
   MyFrameListener(RenderWindow* win, Camera* cam, 
-      SceneManager* sm, Juego* juego);
+      SceneManager* sm);
   ~MyFrameListener();
   bool frameStarted(const FrameEvent& evt);  
 };

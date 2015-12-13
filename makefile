@@ -11,7 +11,7 @@ DIRHEA := include/
 CXX := g++
 
 # Flags de compilación -----------------------------------------------
-CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE` $(CEGUI_CFLAGS) `pkg-config --cflags OIS`
+CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE` $(CEGUI_CFLAGS) `pkg-config --cflags OIS` `pkg-config --cflags OGRE OGRE-Overlay`
 # `pkg-config --cflags OGRE OGRE-Overlay` 
 
 # Flags del linker ---------------------------------------------------
