@@ -229,7 +229,7 @@ void Juego::colocarBarcos(){
 		      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 		      entbar = _sceneManager->createEntity("Barco.mesh");
 		      entbar->setQueryFlags(CUBE1);
-		      //entbar->setVisible(false);/*cambiar a false*/
+		      entbar->setVisible(false);/*cambiar a false*/
 		      nodo_bar->attachObject(entbar);
 		    }
 	            x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 
