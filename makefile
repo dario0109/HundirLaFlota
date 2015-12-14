@@ -2,7 +2,7 @@
 # Makefile Genérico :: Módulo 2. Curso Experto Desarrollo Videojuegos
 # Carlos González Morcillo     Escuela Superior de Informática (UCLM)
 # --------------------------------------------------------------------
-EXEC := iniciomanual
+EXEC := hundirLaFlota
 
 DIRSRC := src/
 DIROBJ := obj/
@@ -11,7 +11,7 @@ DIRHEA := include/
 CXX := g++
 
 # Flags de compilación -----------------------------------------------
-CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE` $(CEGUI_CFLAGS) `pkg-config --cflags OIS` `pkg-config --cflags OGRE OGRE-Overlay`
+CXXFLAGS := -I $(DIRHEA) -Wall `pkg-config --cflags OGRE` $(CEGUI_CFLAGS) `pkg-config --cflags OIS`
 # `pkg-config --cflags OGRE OGRE-Overlay` 
 
 # Flags del linker ---------------------------------------------------
