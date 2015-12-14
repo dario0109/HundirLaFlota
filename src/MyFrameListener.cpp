@@ -91,16 +91,28 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
  if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;
   switch(_estado){
     case 1:
-      if(_keyboard->isKeyDown(OIS::KC_RETURN)){
+      if(_keyboard->isKeyDown(OIS::KC_1)){
         _sceneManager->destroySceneNode("ninicio");
         _juego->generarTablero();
         _juego->generarPlayers();
         _juego->colocarBarcos(); 
-       _estado = 5;
+        _estado = 5;
+      }
+      if(_keyboard->isKeyDown(OIS::KC_2)){
+        _sceneManager->destroySceneNode("ninicio");
+        _juego->crearCreditos();
+        _estado = 2;
       }
     break;
 
-     // Exit!
+    case 2:
+      if(_keyboard->isKeyDown(OIS::KC_B)){
+        _sceneManager->destroySceneNode("ncreditos");
+        _juego->crearMenu();
+        _estado = 1;
+      }
+      break;
+       // Exit!
 /*
   // Operaciones posibles con el nodo seleccionado -------------------
   if (_selectedNode != NULL) {
@@ -125,7 +137,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     if (mbleft) {
       uint32 mask;
       mask = CUBE1 | STAGE;  // Podemos elegir todo
-      Ogre::Ray r = setRayQuery(posx, posy, mask);
+      setRayQuery(posx, posy, mask);
       Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
       Ogre::RaySceneQueryResult::iterator it;
       if(result.begin()!=result.end()){

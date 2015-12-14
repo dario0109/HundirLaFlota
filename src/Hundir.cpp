@@ -72,7 +72,8 @@ void Hundir::createScene() {
   ninicio->attachObject(inicio);
   ninicio->yaw(Ogre::Degree(-15));
   ninicio->pitch(Ogre::Degree(50));
-  ninicio->setScale(2,1,1.2);
+  ninicio->roll(Ogre::Degree(90));
+  ninicio->setScale(1,1.5,1.2);
   ninicio->setPosition(0,0,-2);
   
  /* Sombras */

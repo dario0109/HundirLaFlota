@@ -23,6 +23,8 @@ public:
   void generarPlayers();
   void generarTablero();
   void reiniciar();
+  void crearMenu();
+  void crearCreditos();
   int simular(int x, int y);
   Celda* selCelda(int nplayer, Celda *anterior);
 
