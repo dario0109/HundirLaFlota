@@ -31,13 +31,11 @@ void Juego::generarPlayers(){
   t1->crearTablero(8, barcos1);
   _p1 = new PlayerIA();
   _p1->crearPlayer("IA Player 1", t1, barcos1);
-  _p1->printState();
   std::vector <Barco*> barcos2 = generarBarcos();
   Tablero* t2 = new Tablero();
   t2->crearTablero(8, barcos2);
   _p2 = new PlayerIA();
   _p2->crearPlayer("IA Player 2", t2, barcos2);
-  _p2->printState();
 }
 
 void Juego::generarTablero(){
@@ -46,6 +44,7 @@ void Juego::generarTablero(){
   tablero->setQueryFlags(STAGE);
   _sceneManager->getRootSceneNode()->addChild(ntablero);
   ntablero->attachObject(tablero);
+
 }
 int Juego::simular(int x, int y){
   std::stringstream snbarco1, snbarco2, sncelda1, sncelda2;
@@ -68,7 +67,6 @@ int Juego::simular(int x, int y){
     pieza->setVisible(true);
     snbarco2.str("");
     if(acierto > 1){
-      //std::cout << "Estado de celda en hundido " << aux1->getEstado() << '\n';
       for(unsigned int w = 0; w < (_p2->getBarcos().at(aux1->getEstado()-21))->getPosiciones()->size(); w++){
 	snbarco2 << "B2(" << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).first << "," << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).second << ")";
 	Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
@@ -86,6 +84,7 @@ int Juego::simular(int x, int y){
     sncelda1 << "C1(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+    pieza2->setQueryFlags(STAGE);
     pieza2->setMaterialName("Agua");
     pieza2->setVisible(true);
     sncelda1.str("");
@@ -216,7 +215,6 @@ void Juego::colocarBarcos(){
     leyenda->yaw(Ogre::Degree(-15));
     leyenda->pitch(Ogre::Degree(50));
 
-
 	    /* Igualamos x la posicion inicial */
 	    x = ini_x;
 	    for(int f = 0; f < n_celdas; f++){
@@ -230,7 +228,6 @@ void Juego::colocarBarcos(){
 	            ent->setQueryFlags(CUBE1);
 	            ent->setVisible(false);
 	            nodo_cel->attachObject(ent);
-		    //_p2->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
               sncasilla.str("");
 
                /* Nombre del nodo para esa celda */
@@ -242,12 +239,10 @@ void Juego::colocarBarcos(){
               ent->setQueryFlags(STAGE);
               ent->setVisible(false);
               nodo_cel->attachObject(ent);
-              //_p1->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
 
 		    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 		      snbarco1 << "B1(" << f << "," << c << ")";
 		      nodo_bar = ntablero->createChildSceneNode(snbarco1.str(), Ogre::Vector3(x, 1,-z));
-	          std::cout << snbarco1.str() + "\n" << std::endl;
 		      entbar = _sceneManager->createEntity("Barco.mesh");
 		      entbar->setQueryFlags(STAGE);
 		      entbar->setVisible(true);
@@ -258,7 +253,7 @@ void Juego::colocarBarcos(){
 		      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 		      entbar = _sceneManager->createEntity("Barco.mesh");
 		      entbar->setQueryFlags(CUBE1);
-		      //entbar->setVisible(false);/*cambiar a false*/
+		      entbar->setVisible(false);
 		      nodo_bar->attachObject(entbar);
 		    }
 	            x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 

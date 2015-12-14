@@ -4,7 +4,6 @@
 
 #define STAGE 1 << 0  // Mascara para el escenario
 #define CUBE1 1 << 1  // Mascara para objetos de tipo 1
-#define CUBE2 1 << 2  // Mascara para objetos de tipo 2
 
 using namespace Ogre;
 using namespace std;

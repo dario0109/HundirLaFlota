@@ -6,7 +6,6 @@
 
 #define STAGE 1 << 0  // Mascara para el escenario
 #define CUBE1 1 << 1  // Mascara para objetos de tipo 1
-#define CUBE2 1 << 2
 
 class Juego{  
 private:
@@ -30,9 +29,4 @@ public:
 
   
   bool _endGame;
-  /*Tablero generarTablero(int dim);
-  PlayerIA* getPlayer1();
-  PlayerIA* getPlayer2();
-  void setPlayer1(PlayerIA* p1);
-  void setPlayer2(PlayerIA* p2);*/
 };

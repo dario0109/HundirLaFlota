@@ -22,9 +22,4 @@ public:
   void loadResources();
   void createScene();
   
-  /*Tablero generarTablero(int dim);
-  PlayerIA* getPlayer1();
-  PlayerIA* getPlayer2();
-  void setPlayer1(PlayerIA* p1);
-  void setPlayer2(PlayerIA* p2);*/
 };

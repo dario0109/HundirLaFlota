@@ -43,7 +43,6 @@ MyFrameListener::MyFrameListener(RenderWindow* win, Camera* cam, SceneManager *s
   _mouse->capture();
 
   _raySceneQuery = _sceneManager->createRayQuery(Ray());
-  //_selectedNode = NULL;
 
 }
 
@@ -64,29 +63,17 @@ Ray MyFrameListener::setRayQuery(int posx, int posy, uint32 mask) {
 }
 
 bool MyFrameListener::frameStarted(const FrameEvent& evt) {
-  Vector3 vt(0,0,0);     Real tSpeed = 10.0;  
-  Real deltaT = evt.timeSinceLastFrame;
 
-  bool mbleft, mbmiddle; // Botones del raton pulsados
+
+  bool mbleft; // Botones del raton pulsados
 
   _keyboard->capture();  _mouse->capture();   // Captura eventos
 
   int posx = _mouse->getMouseState().X.abs;   // Posicion del puntero
   int posy = _mouse->getMouseState().Y.abs;   //  en pixeles.
 
-   vt+= Vector3(0,0,-10)*deltaT * _mouse->getMouseState().Z.rel;   
-  _camera->moveRelative(vt * deltaT * tSpeed);
-
   // Botones del raton pulsados? -------------------------------------
   mbleft = _mouse->getMouseState().buttonDown(OIS::MB_Left);
-  mbmiddle = _mouse->getMouseState().buttonDown(OIS::MB_Middle);
-
- if (mbmiddle) {
-    float rotx = _mouse->getMouseState().X.rel * deltaT * -1;
-    float roty = _mouse->getMouseState().Y.rel * deltaT * -1;
-    _camera->yaw(Radian(rotx));
-    _camera->pitch(Radian(roty));
-  }
 
  if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;
   switch(_estado){
@@ -113,52 +100,29 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       }
       break;
        // Exit!
-/*
-  // Operaciones posibles con el nodo seleccionado -------------------
-  if (_selectedNode != NULL) {
-    Real deltaTaux = deltaT;
-    if(_keyboard->isKeyDown(OIS::KC_LSHIFT) ||    // Si pulsamos Shift
-       _keyboard->isKeyDown(OIS::KC_RSHIFT))      // invertimos la
-      deltaTaux *= -1;                            // operacion
-    if(_keyboard->isKeyDown(OIS::KC_S))   
-      _selectedNode->setScale(_selectedNode->getScale()+deltaTaux);
-    if(_keyboard->isKeyDown(OIS::KC_R)) 
-      _selectedNode->yaw(Degree(90)*deltaTaux);
-    if(_keyboard->isKeyDown(OIS::KC_DELETE)) { 
-      _sceneManager->getRootSceneNode()->
-	removeAndDestroyChild(_selectedNode->getName());
-      _selectedNode = NULL;
-    }
-  }
-*/
-  // Si usamos la rueda, desplazamos en Z la camara ------------------
 
-  case 5:
-    if (mbleft) {
-      uint32 mask;
-      mask = CUBE1 | STAGE;  // Podemos elegir todo
-      setRayQuery(posx, posy, mask);
-      Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
-      Ogre::RaySceneQueryResult::iterator it;
-      if(result.begin()!=result.end()){
-        it = result.begin();
-        Ogre::SceneNode* nodo = it->movable->getParentSceneNode();
-        Ogre::MovableObject* clickado = nodo->getAttachedObject(0);
-        std::cout << clickado->getQueryFlags() << std::endl;
-        if(clickado->getQueryFlags()==CUBE1){
-          std::cout << "casilla" << std::endl;
-           std::cout << it->movable->getParentSceneNode()->getName() << std::endl;
-          if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8 && (int)it->movable->getParentSceneNode()->getName()[5]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[5]-48<8){
-            _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[3]-48, (int)it->movable->getParentSceneNode()->getName()[5 ]-48);//tabla ascii
-          }
-          if(_turno == 2){
-            std::cout << "FIN DEL JUEGO!" << '\n';
-            _estado = 6;
+    case 5:
+      if (mbleft) {
+        uint32 mask;
+        mask = CUBE1 | STAGE;  // Podemos elegir todo
+        setRayQuery(posx, posy, mask);
+        Ogre::RaySceneQueryResult &result = _raySceneQuery->execute();
+        Ogre::RaySceneQueryResult::iterator it;
+        if(result.begin()!=result.end()){
+          it = result.begin();
+          Ogre::SceneNode* nodo = it->movable->getParentSceneNode();
+          Ogre::MovableObject* clickado = nodo->getAttachedObject(0);
+          if(clickado->getQueryFlags()==CUBE1){
+            if(_turno==1 && (int)it->movable->getParentSceneNode()->getName()[3]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[3]-48<8 && (int)it->movable->getParentSceneNode()->getName()[5]-48>=0 && (int)it->movable->getParentSceneNode()->getName()[5]-48<8){
+              _turno = _juego->simular((int)it->movable->getParentSceneNode()->getName()[3]-48, (int)it->movable->getParentSceneNode()->getName()[5 ]-48);//tabla ascii
+            }
+            if(_turno == 2){
+              _estado = 6;
+            }
           }
         }
       }
-    }
-  break;
+      break;
   case 6:
     if(_keyboard->isKeyDown(OIS::KC_RETURN)){
       _juego->reiniciar();
@@ -168,7 +132,7 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
       _turno = 1;
       std::cout << _estado << std::endl;
     }
-  break;
+    break;
  }
   return true;
 }

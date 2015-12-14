@@ -1,7 +1,7 @@
 #include "Celda.h"
 #include "Tablero.h"
 #include <vector>
-//template<> Tablero* Ogre::Singleton<Tablero>::msSingleton = 0;
+
 
 Tablero::Tablero(){}
 Tablero::~Tablero(){limpiarTablero();}
@@ -79,16 +79,13 @@ int Tablero::onClick(Celda *cel){
   int acierto = -1;
   int est = cel->getEstado();
   if(est == 0){
-    std::cout << "Agua!" << '\n';
     _tab[cel->getX()][cel->getY()].setEstado(-1);
     acierto = 0;
   }
   else if(est>0 && est<10){
-    std::cout << "Tocado!" << '\n';
     if(_barcos[est-1]->getVida()<=1){
       _tab[cel->getX()][cel->getY()].setEstado(est+20);
       acierto = 2;
-      std::cout << "... Y Hundido!" << '\n';
     }
     else{
       _tab[cel->getX()][cel->getY()].setEstado(est+10);
