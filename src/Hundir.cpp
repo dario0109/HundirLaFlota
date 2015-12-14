@@ -71,11 +71,11 @@ void Hundir::createScene() {
   _sceneManager->getRootSceneNode()->addChild(ninicio);
   ninicio->attachObject(inicio);
   ninicio->yaw(Ogre::Degree(-15));
-  ninicio->pitch(Ogre::Degree(45));
-  ninicio->setScale(1.65,1,1.2);
+  ninicio->pitch(Ogre::Degree(50));
+  ninicio->setScale(2,1,1.2);
   ninicio->setPosition(0,0,-2);
-
-    /* Sombras */
+  
+ /* Sombras */
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->setShadowColour(Ogre::ColourValue(0.5, 0.5, 0.5) );
     _sceneManager->setAmbientLight(Ogre::ColourValue(0.9, 0.9, 0.9));

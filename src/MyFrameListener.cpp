@@ -88,10 +88,9 @@ bool MyFrameListener::frameStarted(const FrameEvent& evt) {
     _camera->pitch(Radian(roty));
   }
 
-
+ if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;
   switch(_estado){
     case 1:
-      if(_keyboard->isKeyDown(OIS::KC_ESCAPE)) return false;
       if(_keyboard->isKeyDown(OIS::KC_RETURN)){
         _sceneManager->destroySceneNode("ninicio");
         _juego->generarTablero();

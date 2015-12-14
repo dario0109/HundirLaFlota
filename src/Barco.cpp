@@ -9,10 +9,7 @@ Barco::Barco(std::string nombre, int vida){
 
 void Barco::setNombre (std::string nombre){_nombre = nombre;}
 void Barco::setVida (int vida){_vida = vida;}
-void Barco::addPosicion(int x, int y){
-  std::cout << x << "," << y;
-  _pos->push_back(std::make_pair(x,y));
-}
+void Barco::addPosicion(int x, int y){_pos->push_back(std::make_pair(x,y));}
 
 std::string Barco::getNombre(){return _nombre;}
 int Barco::getVida(){return _vida;}

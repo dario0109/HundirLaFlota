@@ -201,7 +201,7 @@ void Juego::colocarBarcos(){
 	            ent->setQueryFlags(CUBE1);
 	            ent->setVisible(false);
 	            nodo_cel->attachObject(ent);
-		          _p2->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
+		    //_p2->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
               sncasilla.str("");
 
                /* Nombre del nodo para esa celda */
@@ -213,7 +213,7 @@ void Juego::colocarBarcos(){
               ent->setQueryFlags(STAGE);
               ent->setVisible(false);
               nodo_cel->attachObject(ent);
-              _p1->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
+              //_p1->getTablero()->getCelda(f,c)->setNodo(nodo_cel);
 
 		    if(_p1->getTablero()->getCelda(f,c)->getEstado()>0){
 		      snbarco1 << "B1(" << f << "," << c << ")";
