@@ -255,4 +255,27 @@ void Juego::reiniciar(){
   }
 }
 
+void Juego::crearMenu(){
+  Ogre::Entity* inicio = _sceneManager->createEntity("Inicio.mesh");
+  Ogre::SceneNode* ninicio = _sceneManager->createSceneNode("ninicio");
+  _sceneManager->getRootSceneNode()->addChild(ninicio);
+  ninicio->attachObject(inicio);
+  ninicio->yaw(Ogre::Degree(-15));
+  ninicio->pitch(Ogre::Degree(50));
+  ninicio->roll(Ogre::Degree(90));
+  ninicio->setScale(1,1.5,1.2);
+  ninicio->setPosition(0,0,-2);
+}
 
+void Juego::crearCreditos(){
+  Ogre::Entity* creditos = _sceneManager->createEntity("Creditos.mesh");
+  Ogre::SceneNode* ncreditos = _sceneManager->createSceneNode("ncreditos");
+  _sceneManager->getRootSceneNode()->addChild(ncreditos);
+  ncreditos->attachObject(creditos);
+  ncreditos->yaw(Ogre::Degree(-15));
+  ncreditos->pitch(Ogre::Degree(50));
+  ncreditos->roll(Ogre::Degree(90));
+  ncreditos->pitch(Ogre::Degree(90));
+  ncreditos->setScale(1,1,1.2);
+  ncreditos->setPosition(0,0,-2);
+}
