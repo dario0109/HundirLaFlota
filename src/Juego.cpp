@@ -95,6 +95,10 @@ int Juego::simular(int x, int y){
   }
   if(_p2->getVida()<1){
     turno = 2;
+    Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode("Victoria");
+    Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+    pieza2->setQueryFlags(STAGE);
+    pieza2->setVisible(true);
   }
   if (turno==1){
     usleep(1000000);
@@ -139,7 +143,13 @@ int Juego::simular(int x, int y){
       pieza2->setVisible(true);
       sncelda2.str("");
     }
-    if(_p1->getVida()<1){turno = 2;}
+    if(_p1->getVida()<1){
+      turno = 2;
+      Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode("Derrota");
+      Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
+      pieza2->setQueryFlags(STAGE);
+      pieza2->setVisible(true);
+    }
   }
   return turno;
 }
@@ -188,6 +198,18 @@ void Juego::colocarBarcos(){
 	  tam_celda = 2; z = 1.5; ini_x= -7; n_celdas= 8;
 	  Ogre::SceneNode* ntablero = _sceneManager->getSceneNode("ntablero");
 
+	  Ogre::SceneNode *nodo_v = ntablero->createChildSceneNode("Victoria", Ogre::Vector3(0,10,0));
+	  ent = _sceneManager->createEntity("Barco.mesh");
+	  ent->setQueryFlags(CUBE1);
+	  ent->setVisible(false);
+	  nodo_v->attachObject(ent);
+
+	  Ogre::SceneNode *nodo_d = ntablero->createChildSceneNode("Derrota", Ogre::Vector3(0,10,0));
+	  ent = _sceneManager->createEntity("Barco.mesh");
+	  ent->setQueryFlags(CUBE1);
+	  ent->setVisible(false);
+	  nodo_d->attachObject(ent);
+
 	    /* Igualamos x la posicion inicial */
 	    x = ini_x;
 	    for(int f = 0; f < n_celdas; f++){
@@ -229,7 +251,7 @@ void Juego::colocarBarcos(){
 		      nodo_bar = ntablero->createChildSceneNode(snbarco2.str(), Ogre::Vector3(x, 1, z));
 		      entbar = _sceneManager->createEntity("Barco.mesh");
 		      entbar->setQueryFlags(CUBE1);
-		      entbar->setVisible(false);/*cambiar a false*/
+		      //entbar->setVisible(false);/*cambiar a false*/
 		      nodo_bar->attachObject(entbar);
 		    }
 	            x += tam_celda; sncasilla.str(""); snbarco1.str("");snbarco2.str(""); 
