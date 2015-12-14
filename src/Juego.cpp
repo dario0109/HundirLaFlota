@@ -63,7 +63,6 @@ int Juego::simular(int x, int y){
     snbarco2 << "B2(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
     Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-    //std::cout << "Cambiando color" << std::endl;
     pieza->setQueryFlags(STAGE);
     pieza->setMaterialName("Tocado");
     pieza->setVisible(true);
@@ -74,7 +73,6 @@ int Juego::simular(int x, int y){
 	snbarco2 << "B2(" << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).first << "," << _p2->getBarcos().at(aux1->getEstado()-21)->getPosiciones()->at(w).second << ")";
 	Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
 	Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-	//std::cout << "Cambiando color" << std::endl;
 	pieza->setMaterialName("Hundido");
 	pieza->setVisible(true);
 	snbarco2.str("");
@@ -88,7 +86,6 @@ int Juego::simular(int x, int y){
     sncelda1 << "C1(" << aux1->getX() << "," << aux1->getY() << ")";
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode(sncelda1.str());
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
-    pieza2->setQueryFlags(STAGE);
     pieza2->setMaterialName("Agua");
     pieza2->setVisible(true);
     sncelda1.str("");
@@ -97,7 +94,6 @@ int Juego::simular(int x, int y){
     turno = 2;
     Ogre::SceneNode* casilla2 = _sceneManager->getSceneNode("Victoria");
     Ogre::Entity* pieza2 = static_cast<Ogre::Entity*>(casilla2->getAttachedObject(0));
-    pieza2->setQueryFlags(STAGE);
     pieza2->setVisible(true);
   }
   if (turno==1){
@@ -128,7 +124,6 @@ int Juego::simular(int x, int y){
 	  snbarco2 << "B1(" << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).first << "," << _p1->getBarcos().at(aux2->getEstado()-21)->getPosiciones()->at(w).second << ")";
 	  Ogre::SceneNode* casilla = _sceneManager->getSceneNode(snbarco2.str());
 	  Ogre::Entity* pieza = static_cast<Ogre::Entity*>(casilla->getAttachedObject(0));
-	  //std::cout << "Cambiando color" << std::endl;
 	  pieza->setMaterialName("Hundido");
 	  pieza->setVisible(true);
 	  snbarco2.str("");
@@ -198,17 +193,29 @@ void Juego::colocarBarcos(){
 	  tam_celda = 2; z = 1.5; ini_x= -7; n_celdas= 8;
 	  Ogre::SceneNode* ntablero = _sceneManager->getSceneNode("ntablero");
 
-	  Ogre::SceneNode *nodo_v = ntablero->createChildSceneNode("Victoria", Ogre::Vector3(0,10,0));
-	  ent = _sceneManager->createEntity("Barco.mesh");
-	  ent->setQueryFlags(CUBE1);
+	  Ogre::SceneNode *nodo_v = ntablero->createChildSceneNode("Victoria", Ogre::Vector3(0,15,5));
+	  ent = _sceneManager->createEntity("Victoria.mesh");
+	  ent->setQueryFlags(STAGE);
 	  ent->setVisible(false);
 	  nodo_v->attachObject(ent);
+    nodo_v->pitch(Ogre::Degree(90));
+    nodo_v->roll(Ogre::Degree(15));
 
-	  Ogre::SceneNode *nodo_d = ntablero->createChildSceneNode("Derrota", Ogre::Vector3(0,10,0));
-	  ent = _sceneManager->createEntity("Barco.mesh");
-	  ent->setQueryFlags(CUBE1);
+	  Ogre::SceneNode *nodo_d = ntablero->createChildSceneNode("Derrota", Ogre::Vector3(0,15,5));
+	  ent = _sceneManager->createEntity("Derrota.mesh");
+	  ent->setQueryFlags(STAGE);
 	  ent->setVisible(false);
 	  nodo_d->attachObject(ent);
+    nodo_d->pitch(Ogre::Degree(90));
+    nodo_d->roll(Ogre::Degree(15));
+
+    Ogre::SceneNode *leyenda = ntablero->createChildSceneNode("leyenda", Ogre::Vector3(-15,5,12));
+    ent = _sceneManager->createEntity("Leyenda.mesh");
+    ent->setQueryFlags(STAGE);
+    leyenda->attachObject(ent);
+    leyenda->yaw(Ogre::Degree(-15));
+    leyenda->pitch(Ogre::Degree(50));
+
 
 	    /* Igualamos x la posicion inicial */
 	    x = ini_x;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mesh>
+    <sharedgeometry vertexcount="4">
+        <vertexbuffer positions="true" normals="true" colours_diffuse="False" texture_coords="1">
+            <vertex>
+                <position y="0.000000" z="2.500000" x="5.000000"/>
+                <normal y="1.000000" z="-0.000000" x="-0.000000"/>
+                <texcoord v="0.997048" u="0.997970"/>
+            </vertex>
+            <vertex>
+                <position y="0.000000" z="-2.500000" x="5.000000"/>
+                <normal y="1.000000" z="-0.000000" x="-0.000000"/>
+                <texcoord v="0.002952" u="0.997970"/>
+            </vertex>
+            <vertex>
+                <position y="0.000000" z="-2.500000" x="-5.000000"/>
+                <normal y="1.000000" z="-0.000000" x="-0.000000"/>
+                <texcoord v="0.002952" u="0.002030"/>
+            </vertex>
+            <vertex>
+                <position y="0.000000" z="2.500000" x="-5.000000"/>
+                <normal y="1.000000" z="-0.000000" x="-0.000000"/>
+                <texcoord v="0.997048" u="0.002030"/>
+            </vertex>
+        </vertexbuffer>
+    </sharedgeometry>
+    <submeshes>
+        <submesh use32bitindexes="False" operationtype="triangle_list" material="Victoria" usesharedvertices="true">
+            <faces count="2">
+                <face v1="0" v3="2" v2="1"/>
+                <face v1="0" v3="3" v2="2"/>
+            </faces>
+        </submesh>
+    </submeshes>
+    <submeshnames>
+        <submesh index="0" name="Victoria">
+        </submesh>
+    </submeshnames>
+</mesh>
